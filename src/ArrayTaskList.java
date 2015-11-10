@@ -1,5 +1,8 @@
 
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayTaskList extends TaskList {
 
@@ -12,7 +15,7 @@ public class ArrayTaskList extends TaskList {
 	@Override
 	public void add(Task task) throws NullTaskException {
 		if (task == null)
-			throw new NullTaskException("Task can not be null"); // Task object can't refer to null
+			throw new NullTaskException("Task can not be null");
 
 		if (index == basicArray.length) {
 			increaseArray();
@@ -66,6 +69,41 @@ public class ArrayTaskList extends TaskList {
 
 		int newSize = basicArray.length + 10;
 		basicArray = Arrays.copyOf(basicArray, newSize);
+
+	}
+
+	@Override
+	public void displayList() {
+		for (int i = 0; i < index; i++) {
+			System.out.println(this.getTask(i).getTitle());
+		}
+	}
+
+	@Override
+	public Iterator<Task> iterator() {
+
+		return new ArrayListIterator();
+	}
+
+	private class ArrayListIterator implements Iterator<Task> {
+
+		int cursor;
+
+		public boolean hasNext() {
+			return cursor != size;
+		}
+
+		public Task next() {
+
+			int i = cursor;
+			if (i >= size)
+				throw new NoSuchElementException("This element is not exist");
+			Task[] elementData = basicArray;
+			if (i >= elementData.length)
+				throw new ConcurrentModificationException();
+			cursor = i + 1;
+			return elementData[i];
+		}
 
 	}
 

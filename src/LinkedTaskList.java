@@ -1,3 +1,5 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedTaskList extends TaskList {
 
@@ -118,6 +120,7 @@ public class LinkedTaskList extends TaskList {
 		}
 	}
 
+	@Override
 	public void displayList() {
 		Node current = first;
 		while (current != null) {
@@ -125,6 +128,34 @@ public class LinkedTaskList extends TaskList {
 			current = current.next;
 
 		}
+	}
+
+	@Override
+	public Iterator<Task> iterator() {
+
+		return new LinkedListIterator();
+	}
+
+	private class LinkedListIterator implements Iterator<Task> {
+
+		Node firstNodeTask = first;
+
+		public boolean hasNext() {
+
+			return (firstNodeTask != null);
+		}
+
+		public Task next() {
+
+			if (!hasNext()) {
+				throw new NoSuchElementException("This element is not exist");
+			}
+
+			Task nextTask = firstNodeTask.task;
+			firstNodeTask = firstNodeTask.next;
+			return nextTask;
+		}
+
 	}
 
 }

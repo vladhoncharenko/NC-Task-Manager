@@ -1,8 +1,8 @@
 import java.io.IOException;
 
-abstract public class TaskList {
+abstract public class TaskList implements Iterable<Task> {
 
-	public static class Node {
+	public class Node {
 		public Task task;
 		public Node next;
 		public Node previous;
@@ -53,6 +53,10 @@ abstract public class TaskList {
 
 	public Task getTask(int index) {
 		return null;
+	}
+
+	public void displayList() {
+
 	}
 
 	public TaskList incomingTask(int from, int to) throws IOException {

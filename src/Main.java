@@ -129,7 +129,7 @@ public class Main {
 
 		System.out.println(newList.size());
 
-		newList.remove(taskTwo);
+		newList.remove(taskThree);
 		System.out.println(newList.size());
 
 		try {
@@ -158,6 +158,23 @@ public class Main {
 			System.err.println("\n" + e.toString());
 
 		}
+
+		firstTaskList.displayList();
+
+		System.out.println("Linked List ITERATOR");
+
+		// for (Task h : newList) {
+		for (Task l : newList) {
+			System.out.println(l.getTitle());
+		}
+		// }
+
+		System.out.println("Array List ITERATOR");
+		// for (Task h : newList) {
+		for (Task l : firstTaskList) {
+			System.out.println(l.getTitle());
+		}
+		// }
 
 	}
 

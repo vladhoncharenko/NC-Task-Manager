@@ -55,9 +55,6 @@ public class Task {
 		return this.repeated;
 	}
 
-	// Методи для зчитування та зміни часу виконання для задач, що не
-	// повторюються:
-
 	public int getTime() {
 		return !isRepeated() ? this.time : this.start;
 	}
@@ -73,8 +70,6 @@ public class Task {
 			this.repeated = false;
 		}
 	}
-
-	// Методи для зчитування та зміни часу виконання для задач, що повторюються:
 
 	public int getStartTime() {
 		return isRepeated() ? this.start : this.end - this.start;
