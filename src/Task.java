@@ -35,6 +35,10 @@ public class Task {
 		repeated = true;
 	}
 
+	public Task() {
+
+	}
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -119,6 +123,81 @@ public class Task {
 			}
 			return -1;
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (active ? 1231 : 1237);
+		result = prime * result + end;
+		result = prime * result + interval;
+		result = prime * result + (repeated ? 1231 : 1237);
+		result = prime * result + start;
+		result = prime * result + time;
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Task other = (Task) obj;
+		if (active != other.active)
+			return false;
+		if (end != other.end)
+			return false;
+		if (interval != other.interval)
+			return false;
+		if (repeated != other.repeated)
+			return false;
+		if (start != other.start)
+			return false;
+		if (time != other.time)
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		if (this.isRepeated()) {
+			System.out.println("Task " + title + " starts at " + start + ", ends at " + end + ", with interval "
+					+ interval + " hour/s, active=" + active);
+		} else
+			System.out.println("Task " + title + " starts at " + time + " active=" + active);
+		return null;
+	}
+
+	public Task clone() {
+		Task newClonedTask = new Task();
+		if (this.isRepeated()) {
+			newClonedTask.setTitle(this.title);
+			try {
+				newClonedTask.setTime(this.start, this.end, this.interval);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return newClonedTask;
+		} else
+			newClonedTask.setTitle(this.title);
+		try {
+			newClonedTask.setTime(this.time);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return newClonedTask;
 	}
 
 }

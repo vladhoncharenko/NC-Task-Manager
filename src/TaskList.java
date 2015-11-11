@@ -1,6 +1,7 @@
 import java.io.IOException;
 
-abstract public class TaskList implements Iterable<Task> {
+
+abstract public class TaskList implements Iterable<Task>, Cloneable {
 
 	public class Node {
 		public Task task;
@@ -36,6 +37,7 @@ abstract public class TaskList implements Iterable<Task> {
 	public Node last;
 	public int size = 0;
 	public int index = 0;
+	Task[] basicArray;
 
 	public void add(Task task) throws NullTaskException {
 	}
@@ -53,10 +55,6 @@ abstract public class TaskList implements Iterable<Task> {
 
 	public Task getTask(int index) {
 		return null;
-	}
-
-	public void displayList() {
-
 	}
 
 	public TaskList incomingTask(int from, int to) throws IOException {
@@ -135,6 +133,71 @@ abstract public class TaskList implements Iterable<Task> {
 		} else
 			throw new IOException("Enter a valid data!");
 
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((first == null) ? 0 : first.hashCode());
+		result = prime * result + index;
+		result = prime * result + ((last == null) ? 0 : last.hashCode());
+		result = prime * result + size;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TaskList other = (TaskList) obj;
+		if (first == null) {
+			if (other.first != null)
+				return false;
+		} else if (!first.equals(other.first))
+			return false;
+		if (index != other.index)
+			return false;
+		if (last == null) {
+			if (other.last != null)
+				return false;
+		} else if (!last.equals(other.last))
+			return false;
+		if (size != other.size)
+			return false;
+		return true;
+	}
+
+	public Object clone() throws CloneNotSupportedException {
+
+		if (this instanceof ArrayTaskList) {
+
+			ArrayTaskList clonedArray = (ArrayTaskList) super.clone();
+			/*
+			 * ArrayTaskList clonedArray = new ArrayTaskList(); this.basicArray
+			 * = Arrays.copyOf(this.basicArray, this.size);
+			 */
+			return clonedArray;
+
+		} else {
+
+			LinkedTaskList clonedTaskList = (LinkedTaskList) super.clone();
+			/*
+			 * LinkedTaskList clonedTaskList = new LinkedTaskList();
+			 * clonedTaskList.first = clonedTaskList.last = null;
+			 * 
+			 * for (Node x = first; x != null; x = x.next) try {
+			 * clonedTaskList.add(x.task); } catch (NullTaskException e) {
+			 * 
+			 * e.printStackTrace(); }
+			 */
+
+			return clonedTaskList;
+		}
 	}
 
 }

@@ -6,8 +6,6 @@ import java.util.NoSuchElementException;
 
 public class ArrayTaskList extends TaskList {
 
-	private Task[] basicArray;
-
 	public ArrayTaskList() {
 		basicArray = new Task[10];
 	}
@@ -73,10 +71,11 @@ public class ArrayTaskList extends TaskList {
 	}
 
 	@Override
-	public void displayList() {
+	public String toString() {
 		for (int i = 0; i < index; i++) {
 			System.out.println(this.getTask(i).getTitle());
 		}
+		return null;
 	}
 
 	@Override

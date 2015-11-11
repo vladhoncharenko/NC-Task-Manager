@@ -121,13 +121,14 @@ public class LinkedTaskList extends TaskList {
 	}
 
 	@Override
-	public void displayList() {
+	public String toString() {
 		Node current = first;
 		while (current != null) {
 			current.displayLink();
 			current = current.next;
 
 		}
+		return null;
 	}
 
 	@Override
