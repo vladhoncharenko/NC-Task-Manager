@@ -1,9 +1,15 @@
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Main {
-	public static void main(String args[]) {
+	@SuppressWarnings("deprecation")
+	public static void main(String args[]) throws ParseException {
 
 		ArrayTaskList firstTaskList = new ArrayTaskList();
+
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 		Task firstTask = null;
 		Task secondTask = null;
@@ -17,15 +23,15 @@ public class Main {
 
 		try {
 
-			firstTask = new Task("First", 17);
-			secondTask = new Task("Second", 10, 22, 2);
-			taskOne = new Task("First ", 18);
-			taskTwo = new Task("Second", 8);
-			taskThree = new Task("Third ", 9);
-			taskFour = new Task("Fourth ", 5);
-			task5 = new Task("5-th", 5, 18, 1);
-			task6 = new Task("6-th ", 4, 20, 5);
-			task7 = new Task("7-th", 1, 4, 1);
+			firstTask = new Task("First", "14-11-2015 19:59");
+			secondTask = new Task("Second", "15-11-2015 01:07", "16-12-2015 19:47", 25);
+			taskOne = new Task("First ", "01-12-2015 22:30");
+			taskTwo = new Task("Second", "11-12-2015 15:07");
+			taskThree = new Task("Third ", "23-12-2015 9:00");
+			taskFour = new Task("Fourth ", "01-12-2015 10:40");
+			task5 = new Task("5-th", "30-12-2015 10:47", "31-12-2015 8:48", 10);
+			task6 = new Task("6-th ", "08-12-2015 10:47", "15-12-2015 12:42", 50);
+			task7 = new Task("7-th", "01-12-2015 10:47", "02-12-2015 23:47", 10);
 
 		} catch (IOException e4) {
 			System.err.println("\n" + e4.toString());
@@ -56,7 +62,7 @@ public class Main {
 		System.out.println("Interval time of first task is " + secondTask.getRepeatInterval());
 
 		try {
-			System.out.println("\n" + "Next time of execution " + firstTask.nextTimeAfter(18));
+			System.out.println("\n" + "Next time of execution " + firstTask.nextTimeAfter("11-12-2015 10:40"));
 		} catch (IOException e4) {
 			System.err.println("\n" + e4.toString());
 		}
@@ -78,8 +84,9 @@ public class Main {
 		System.out.println("##########");
 
 		try {
-			for (int i = 0; i <= 2; i++) {
-				System.out.println(firstTaskList.incomingTask(6, 15).getTask(i).getTitle());
+			for (int i = 0; i <= 5; i++) {
+				System.out.println(
+						firstTaskList.incomingTask("13-10-2015 10:40", "11-12-2016 10:40").getTask(i).getTitle());
 			}
 		} catch (IOException e) {
 			System.err.println("\n" + e.toString());
@@ -99,7 +106,7 @@ public class Main {
 
 		try {
 
-			firstTaskList.setNewValue(45, taskOne);
+			firstTaskList.setNewValue(45, taskOne);// My ex
 
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.err.println("\n" + e.toString());
@@ -133,7 +140,7 @@ public class Main {
 		System.out.println(newList.size());
 
 		try {
-			newList.setNewValue(47, task6);
+			newList.setNewValue(47, task6);// My ex
 
 		} catch (IndexOutOfBoundsException e) {
 			System.err.println("\n" + e.toString());
@@ -142,7 +149,7 @@ public class Main {
 		}
 
 		try {
-			System.out.println(newList.getTask(55).getTitle());
+			System.out.println(newList.getTask(55).getTitle());// My ex
 		} catch (Exception e) {
 			System.err.println("\n" + e.toString());
 		}
@@ -151,7 +158,7 @@ public class Main {
 
 		System.out.println("Incoming Tasks:");
 		try {
-			((LinkedTaskList) newList.incomingTask(19, 22)).toString();
+			((LinkedTaskList) newList.incomingTask("13-11-2015 10:40", "11-12-2015 10:40")).toString();
 
 		} catch (IOException e) {
 
@@ -174,34 +181,27 @@ public class Main {
 		}
 		// }
 
-		
-		Task task6clone=task6.clone();
+		Task task6clone = task6.clone();
 		System.out.println("Task 6 Clone");
 		task6clone.toString();
 		System.out.println("Original Task 6");
 		task6.toString();
-		
-		System.out.println("Task 6 = Task 7?="+task6.equals(task7));
-		System.out.println("Task 6 = Task 6 clone?="+task6.equals(task6clone));
-		System.out.println("Task 6's Hash Code = Task 7's Hash Code?="+ (task6.hashCode()==task7.hashCode()));
-		System.out.println("Task 6's Hash Code = Task 6 clone's Hash Code?="+(task6.hashCode()==task6clone.hashCode()));
-		
-		
+
+		System.out.println("Task 6 = Task 7?=" + task6.equals(task7));
+		System.out.println("Task 6 = Task 6 clone?=" + task6.equals(task6clone));
+		System.out.println("Task 6's Hash Code = Task 7's Hash Code?=" + (task6.hashCode() == task7.hashCode()));
+		System.out.println(
+				"Task 6's Hash Code = Task 6 clone's Hash Code?=" + (task6.hashCode() == task6clone.hashCode()));
+
 		try {
-			task6clone.setTime(7);
+			task6clone.setTime("01-12-2017 10:40");
 		} catch (IOException e1) {
-			
+
 			e1.printStackTrace();
 		}
-		
-		System.out.println("Task 6 = modified Task 6 clone?="+task6.equals(task6clone));
-		
-		
-		
-		
-		
-		
-		
+
+		System.out.println("Task 6 = modified Task 6 clone?=" + task6.equals(task6clone));
+
 		System.out.println("LinkedTaskList Clone");
 
 		newList.toString();
@@ -213,17 +213,12 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		System.out.println("newList HC "+newList.hashCode());
-		System.out.println("newList2 HC "+newList2.hashCode());
-		System.out.println("newList = newList2?="+newList.equals(newList2));
+		System.out.println("newList HC " + newList.hashCode());
+		System.out.println("newList2 HC " + newList2.hashCode());
+		System.out.println("newList = newList2?=" + newList.equals(newList2));
 		System.out.println("*******");
 		newList2.toString();
 
-		
-		
-		
-		
-		
 		System.out.println("ArrayTaskList Clone");
 
 		firstTaskList.toString();
@@ -234,14 +229,15 @@ public class Main {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("firstTaskList HC "+firstTaskList.hashCode());
-		System.out.println("firstTaskList2 HC "+firstTaskList2.hashCode());
-		System.out.println("firstTaskList = firstTaskList2?="+firstTaskList.equals(firstTaskList2));
+
+		System.out.println("firstTaskList HC " + firstTaskList.hashCode());
+		System.out.println("firstTaskList2 HC " + firstTaskList2.hashCode());
+		System.out.println("firstTaskList = firstTaskList2?=" + firstTaskList.equals(firstTaskList2));
 		System.out.println("*******");
 		firstTaskList2.toString();
 
-		System.out.println("HashCode of ArrayTaskList " + firstTaskList.hashCode() + "\n" + "Hash Code of LinkedTaskList "
+		System.out
+				.println("HashCode of ArrayTaskList " + firstTaskList.hashCode() + "\n" + "Hash Code of LinkedTaskList "
 						+ newList.hashCode() + "\n" + "Hash Code of taskOne " + task7.hashCode());
 
 		System.out.println("Task 4 to string:");
@@ -249,6 +245,11 @@ public class Main {
 
 		System.out.println("Task 7 to string:");
 		task7.toString();
+
+		String Timef = ("13-10-2015 10:40");
+		Date Time = format.parse(Timef);
+		Time.setMinutes(Time.getMinutes() + 800);
+		System.out.println("+86" + Time.toString());
 
 	}
 

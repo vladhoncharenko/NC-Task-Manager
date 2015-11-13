@@ -1,5 +1,8 @@
 import java.io.IOException;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 abstract public class TaskList implements Iterable<Task>, Cloneable {
 
@@ -38,6 +41,7 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 	public int size = 0;
 	public int index = 0;
 	Task[] basicArray;
+	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 	public void add(Task task) throws NullTaskException {
 	}
@@ -57,7 +61,11 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 		return null;
 	}
 
-	public TaskList incomingTask(int from, int to) throws IOException {
+	@SuppressWarnings("deprecation")
+	public TaskList incomingTask(String fromS, String toS) throws IOException, ParseException {
+
+		Date from = format.parse(fromS);
+		Date to = format.parse(toS);
 
 		if (this instanceof ArrayTaskList) {
 
@@ -65,7 +73,8 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 
 			for (int i = 0; i < index; i++) {
 				beginOfTheCycle: if (!this.getTask(i).isRepeated()) {
-					if (this.getTask(i).getTime() >= from && this.getTask(i).getTime() <= to) {
+					if ((from.before(this.getTask(i).getTime()) || from.equals(this.getTask(i).getTime())
+							&& (this.getTask(i).getTime().before(to) || this.getTask(i).getTime().equals(to)))) {
 						try {
 							incomingTaskList.add(getTask(i));
 
@@ -75,9 +84,11 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 
 					}
 				} else {
-					for (int Time = this.getTask(i).getStartTime(); Time <= this.getTask(i).getEndTime(); Time += this
-							.getTask(i).getRepeatInterval()) {
-						if (Time >= from && Time <= to) {
+					for (Date Time = this.getTask(i).getStartTime(); (Time.before(this.getTask(i).getEndTime())
+							|| Time.equals(this.getTask(i).getEndTime())); Time
+									.setMinutes(Time.getMinutes() + this.getTask(i).getRepeatInterval())) {
+						if ((from.before(Time) || from.equals(Time)) && (Time.before(to) || Time.equals(to))) {
+
 							try {
 								incomingTaskList.add(getTask(i));
 
@@ -100,7 +111,9 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 			while (current != null) {
 
 				beginOfTheCycle: if (!this.getTask(index).isRepeated()) {
-					if (this.getTask(index).getTime() >= from && this.getTask(index).getTime() <= to) {
+					if ((from.before(this.getTask(index).getTime())
+							|| from.equals(this.getTask(index).getTime()) && (this.getTask(index).getTime().before(to)
+									|| this.getTask(index).getTime().equals(to)))) {
 						try {
 							incomingLinkedTaskList.add(getTask(index));
 
@@ -110,9 +123,11 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 
 					}
 				} else {
-					for (int Time = this.getTask(index).getStartTime(); Time <= this.getTask(index)
-							.getEndTime(); Time += this.getTask(index).getRepeatInterval()) {
-						if (Time >= from && Time <= to) {
+					for (Date Time = this.getTask(index).getStartTime(); (Time.before(this.getTask(index).getEndTime())
+							|| Time.equals(this.getTask(index).getEndTime())); Time
+									.setMinutes(Time.getMinutes() + this.getTask(index).getRepeatInterval())) {
+
+						if ((from.before(Time) || from.equals(Time)) && (Time.before(to) || Time.equals(to))) {
 							try {
 								incomingLinkedTaskList.add(getTask(index));
 
@@ -139,6 +154,7 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + Arrays.hashCode(basicArray);
 		result = prime * result + ((first == null) ? 0 : first.hashCode());
 		result = prime * result + index;
 		result = prime * result + ((last == null) ? 0 : last.hashCode());
@@ -155,6 +171,8 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 		if (getClass() != obj.getClass())
 			return false;
 		TaskList other = (TaskList) obj;
+		if (!Arrays.equals(basicArray, other.basicArray))
+			return false;
 		if (first == null) {
 			if (other.first != null)
 				return false;
