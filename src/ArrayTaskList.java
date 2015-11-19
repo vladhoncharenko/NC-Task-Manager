@@ -42,17 +42,7 @@ public class ArrayTaskList extends TaskList {
 		return false;
 	}
 
-	@Override
-	public void setNewValue(int index, Task task) throws NullTaskException {
-
-		if (index <= -1 || index > this.index)
-			throw new ArrayIndexOutOfBoundsException(
-					"Enter a valid task index, that exist's in array, in method setNewValue");
-		if (task == null)
-			throw new NullTaskException("Task can not be null");
-
-		basicArray[index] = task;
-	}
+	
 
 	@Override
 	public Task getTask(int index) {
@@ -106,4 +96,11 @@ public class ArrayTaskList extends TaskList {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
 }

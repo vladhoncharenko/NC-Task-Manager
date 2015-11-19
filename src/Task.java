@@ -162,33 +162,46 @@ public class Task {
 		if (getClass() != obj.getClass())
 			return false;
 		Task other = (Task) obj;
+
+		if (!this.repeated == other.repeated)
+			return false;
 		if (active != other.active)
 			return false;
-		if (end == null) {
-			if (other.end != null)
-				return false;
-		} else if (!end.equals(other.end))
-			return false;
-		if (interval != other.interval)
-			return false;
-		if (repeated != other.repeated)
-			return false;
-		if (start == null) {
-			if (other.start != null)
-				return false;
-		} else if (!start.equals(other.start))
-			return false;
-		if (time == null) {
-			if (other.time != null)
-				return false;
-		} else if (!time.equals(other.time))
-			return false;
+
 		if (title == null) {
 			if (other.title != null)
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
-		return true;
+
+		if (!this.repeated) {
+
+			if (time == null) {
+				if (other.time != null)
+					return false;
+			} else if (!time.equals(other.time))
+				return false;
+
+			return true;
+		} else {
+
+			if (end == null) {
+				if (other.end != null)
+					return false;
+			} else if (!end.equals(other.end))
+				return false;
+			if (interval != other.interval)
+				return false;
+			if (repeated != other.repeated)
+				return false;
+			if (start == null) {
+				if (other.start != null)
+					return false;
+			} else if (!start.equals(other.start))
+				return false;
+
+			return true;
+		}
 	}
 
 	@Override

@@ -3,9 +3,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Main {
+public class Main extends Tasks {
 	@SuppressWarnings("deprecation")
-	public static void main(String args[]) throws ParseException {
+	public static void main(String args[]) throws ParseException, NullTaskException {
 
 		ArrayTaskList firstTaskList = new ArrayTaskList();
 
@@ -23,14 +23,15 @@ public class Main {
 
 		try {
 
-			firstTask = new Task("First", "14-11-2015 19:59");
-			secondTask = new Task("Second", "15-11-2015 01:07", "16-12-2015 19:47", 25);
-			taskOne = new Task("First ", "01-12-2015 22:30");
+			firstTask = new Task("First A", "10-12-2015 19:59");
+			secondTask = new Task("Second", "11-12-2015 01:07", "11-12-2015 19:47", 25);
+
+			taskOne = new Task("First ", "13-12-2015 22:30");
 			taskTwo = new Task("Second", "11-12-2015 15:07");
-			taskThree = new Task("Third ", "23-12-2015 9:00");
+			taskThree = new Task("Third ", "10-12-2015 9:00");
 			taskFour = new Task("Fourth ", "01-12-2015 10:40");
-			task5 = new Task("5-th", "30-12-2015 10:47", "31-12-2015 8:48", 10);
-			task6 = new Task("6-th ", "08-12-2015 10:47", "15-12-2015 12:42", 50);
+			task5 = new Task("5-th", "03-12-2015 10:47", "23-12-2015 8:48", 10);
+			task6 = new Task("6-th ", "12-12-2015 00:47", "22-12-2015 12:42", 50);
 			task7 = new Task("7-th", "01-12-2015 10:47", "02-12-2015 23:47", 10);
 
 		} catch (IOException e4) {
@@ -83,15 +84,6 @@ public class Main {
 
 		System.out.println("##########");
 
-		try {
-			for (int i = 0; i <= 5; i++) {
-				System.out.println(
-						firstTaskList.incomingTask("13-10-2015 10:40", "11-12-2016 10:40").getTask(i).getTitle());
-			}
-		} catch (IOException e) {
-			System.err.println("\n" + e.toString());
-		}
-
 		System.out.println("###########");
 
 		System.out.println(task7.getRepeatInterval());
@@ -104,19 +96,10 @@ public class Main {
 
 		}
 
-		try {
-
-			firstTaskList.setNewValue(45, taskOne);// My ex
-
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.err.println("\n" + e.toString());
-		} catch (NullTaskException ex) {
-			System.err.println("\n" + ex.toString());
-		}
-
 		System.out.println("_________ LINKED LIST _________");
 
 		LinkedTaskList newList = new LinkedTaskList();
+		LinkedTaskList newList333 = new LinkedTaskList();
 
 		try {
 
@@ -132,6 +115,21 @@ public class Main {
 			System.err.println("\n" + e1.toString());
 		}
 
+		try {
+
+			newList333.add(taskThree);
+			newList333.add(taskFour);
+			newList333.add(taskOne);
+			newList333.add(taskTwo);
+
+			newList333.add(task5);
+
+			newList333.add(task7);
+			newList333.add(task6);
+
+		} catch (NullTaskException e1) {
+			System.err.println("\n" + e1.toString());
+		}
 		newList.toString();
 
 		System.out.println(newList.size());
@@ -140,31 +138,12 @@ public class Main {
 		System.out.println(newList.size());
 
 		try {
-			newList.setNewValue(47, task6);// My ex
-
-		} catch (IndexOutOfBoundsException e) {
-			System.err.println("\n" + e.toString());
-		} catch (NullTaskException ex) {
-			System.err.println("\n" + ex.toString());
-		}
-
-		try {
 			System.out.println(newList.getTask(55).getTitle());// My ex
 		} catch (Exception e) {
 			System.err.println("\n" + e.toString());
 		}
 
 		newList.toString();
-
-		System.out.println("Incoming Tasks:");
-		try {
-			((LinkedTaskList) newList.incomingTask("13-11-2015 10:40", "11-12-2015 10:40")).toString();
-
-		} catch (IOException e) {
-
-			System.err.println("\n" + e.toString());
-
-		}
 
 		System.out.println("Linked List ITERATOR");
 
@@ -182,6 +161,7 @@ public class Main {
 		// }
 
 		Task task6clone = task6.clone();
+		newList.add(task6clone);
 		System.out.println("Task 6 Clone");
 		task6clone.toString();
 		System.out.println("Original Task 6");
@@ -215,9 +195,13 @@ public class Main {
 
 		System.out.println("newList HC " + newList.hashCode());
 		System.out.println("newList2 HC " + newList2.hashCode());
-		System.out.println("newList = newList2?=" + newList.equals(newList2));
-		System.out.println("*******");
 		newList2.toString();
+		System.out.println("newList = newList2?=" + newList2.equals(newList));
+		System.out.println("newList33333 = newList=" + newList333.equals(newList));
+		newList2.remove(task5);
+		System.out.println("newList2 HC " + newList2.hashCode());
+
+		System.out.println("newList = newList2?=" + newList2.equals(newList));
 
 		System.out.println("ArrayTaskList Clone");
 
@@ -233,6 +217,9 @@ public class Main {
 		System.out.println("firstTaskList HC " + firstTaskList.hashCode());
 		System.out.println("firstTaskList2 HC " + firstTaskList2.hashCode());
 		System.out.println("firstTaskList = firstTaskList2?=" + firstTaskList.equals(firstTaskList2));
+
+		System.out.println("firstTaskList = firstTaskList2?=" + firstTaskList.equals(firstTaskList2));
+
 		System.out.println("*******");
 		firstTaskList2.toString();
 
@@ -250,6 +237,66 @@ public class Main {
 		Date Time = format.parse(Timef);
 		Time.setMinutes(Time.getMinutes() + 800);
 		System.out.println("+86" + Time.toString());
+
+		System.out.println("Incoming Tasks____________:");
+		System.out.println("ARRAY:");
+
+		try {
+
+			(incoming(firstTaskList, "14-12-2015 10:40", "15-12-2015 10:40")).toString();
+
+		} catch (IOException e) {
+			System.err.println("\n" + e.toString());
+		}
+
+		System.out.println("\n" + "LL");
+		try {
+			(incoming(newList, "20-11-2015 10:40", "20-12-2015 10:40")).toString();
+
+		} catch (IOException e) {
+
+			System.err.println("\n" + e.toString());
+
+		}
+		System.out.println("\n");
+		System.out.println("Arr index:" + firstTaskList.index());
+		System.out.println("Linked index:" + newList.index());
+
+		System.out.println("Arr s:" + firstTaskList.size());
+		System.out.println("Linked s" + newList.size());
+		try {
+			firstTaskList.remove(task5);
+		} catch (NullTaskException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		newList.remove(task6clone);
+		newList.remove(taskFour);
+		newList.remove(taskTwo);
+
+		System.out.println("Arr index:" + firstTaskList.index());
+		System.out.println("Linked index:" + newList.index());
+
+		System.out.println("Arr s:" + firstTaskList.size());
+		System.out.println("Linked s" + newList.size());
+
+		System.out.println("LL Calendar");
+		try {
+			calendar(newList, "20-11-2015 10:40", "20-12-2015 10:40");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Aray Calendar");
+
+		try {
+			calendar(firstTaskList, "20-11-2015 10:40", "20-12-2015 10:40");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

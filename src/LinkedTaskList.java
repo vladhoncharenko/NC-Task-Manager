@@ -12,6 +12,8 @@ public class LinkedTaskList extends TaskList {
 		if (task == null)
 			throw new NullTaskException("Task can not be null");
 
+		size++;
+		index++;
 		final Node lastNode = last;
 		final Node newNode = new Node(lastNode, task, null);
 		last = newNode;
@@ -19,7 +21,6 @@ public class LinkedTaskList extends TaskList {
 			first = newNode;
 		else
 			lastNode.next = newNode;
-		size++;
 
 	}
 
@@ -33,6 +34,7 @@ public class LinkedTaskList extends TaskList {
 			for (Node x = first; x != null; x = x.next) {
 				if (x.task == null) {
 					unlink(x);
+					index--;
 					return true;
 				}
 			}
@@ -40,6 +42,7 @@ public class LinkedTaskList extends TaskList {
 			for (Node x = first; x != null; x = x.next) {
 				if (task.equals(x.task)) {
 					unlink(x);
+					index--;
 					return true;
 				}
 			}
@@ -48,23 +51,9 @@ public class LinkedTaskList extends TaskList {
 	}
 
 	@Override
-	public void setNewValue(int index, Task task) throws NullTaskException {
-
-		if (index < 0 || index > size)
-			throw new IndexOutOfBoundsException("Enter a valid task index, that exist's in this list");
-		if (task == null)
-			throw new NullTaskException("Task can not be null");
-
-		Node x = getNode(index);
-		x.task = task;
-
-	}
-
-	@Override
 	public Task getTask(int index) {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException("Enter a valid task index, that exist's in this list");
-		index--;
 		if (index < (size >> 1)) {
 			Node x = first;
 			for (int i = 0; i < index; i++)
@@ -100,13 +89,13 @@ public class LinkedTaskList extends TaskList {
 
 		x.task = null;
 		size--;
+		// index--;
 		return element;
 	}
 
 	Node getNode(int index) {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException("Enter a valid task index, that exist's in this list");
-		index--;
 		if (index < (size >> 1)) {
 			Node x = first;
 			for (int i = 0; i < index; i++)
