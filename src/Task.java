@@ -1,10 +1,9 @@
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Task {
+public class Task implements DateFormat {
 
 	private String title;
 	private Date time;
@@ -15,7 +14,6 @@ public class Task {
 	private boolean repeated;
 	Date currentDate = new Date();
 	static final long ONE_MINUTE_IN_MILLIS = 60000;
-	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 	public Task(String titleConstructor, String timeConstructor) throws IOException, ParseException {
 

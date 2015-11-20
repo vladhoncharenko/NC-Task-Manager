@@ -24,10 +24,6 @@ public class LinkedTaskList extends TaskList {
 
 	}
 
-	public int size() {
-		return size;
-	}
-
 	@Override
 	public boolean remove(Task task) {
 		if (task == null) {
@@ -89,7 +85,6 @@ public class LinkedTaskList extends TaskList {
 
 		x.task = null;
 		size--;
-		// index--;
 		return element;
 	}
 

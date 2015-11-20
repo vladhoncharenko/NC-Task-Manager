@@ -1,9 +1,6 @@
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -63,20 +60,20 @@ public class Tasks implements DateFormat {
 	public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, String fromS, String toS)
 			throws IOException, ParseException {
 
-		Map<Date, Task> NMap = new TreeMap<Date, Task>();
+		Map<Date, Task> newMap = new TreeMap<Date, Task>();
 
-		LinkedTaskList newL = (LinkedTaskList) incoming(tasks, fromS, toS);
+		LinkedTaskList newLinkedTaskList = (LinkedTaskList) incoming(tasks, fromS, toS);
 
 		for (int i = 0; i < ((TaskList) tasks).index(); i++) {
-			NMap.put(newL.getTask(i).getTime(), newL.getTask(i));
+			newMap.put(newLinkedTaskList.getTask(i).getTime(), newLinkedTaskList.getTask(i));
 
 		}
 
-		Set<Entry<Date, Task>> set = NMap.entrySet();
+		Set<Entry<Date, Task>> newSet = newMap.entrySet();
 
-		for (Entry<Date, Task> me : set) {
-			System.out.print(me.getKey() + ": ");
-			System.out.println(me.getValue().getTitle());
+		for (Entry<Date, Task> obj : newSet) {
+			System.out.print(obj.getKey() + ": ");
+			System.out.println(obj.getValue().getTitle());
 		}
 
 		return null;

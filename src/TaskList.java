@@ -1,9 +1,7 @@
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
 
-abstract public class TaskList implements Iterable<Task>, Cloneable {
+import java.util.Arrays;
+
+abstract public class TaskList implements Iterable<Task>, Cloneable, DateFormat {
 
 	public class Node {
 		public Task task;
@@ -40,7 +38,6 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 	public int size = 0;
 	public int index = 0;
 	Task[] basicArray;
-	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 	public void add(Task task) throws NullTaskException {
 	}
@@ -55,6 +52,10 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 
 	public Task getTask(int index) {
 		return null;
+	}
+
+	public int index() {
+		return index;
 	}
 
 	@Override
@@ -93,9 +94,9 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 				return false;
 
 			if (format == null) {
-				if (other.format != null)
+				if (DateFormat.format != null)
 					return false;
-			} else if (!format.equals(other.format))
+			} else if (!format.equals(DateFormat.format))
 				return false;
 			if (index != other.index)
 				return false;
@@ -158,11 +159,6 @@ abstract public class TaskList implements Iterable<Task>, Cloneable {
 
 			return clonedTaskList;
 		}
-	}
-
-	public int index() {
-
-		return index;
 	}
 
 }

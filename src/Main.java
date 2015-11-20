@@ -1,15 +1,12 @@
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Main extends Tasks {
+public class Main extends Tasks implements DateFormat {
 	@SuppressWarnings("deprecation")
 	public static void main(String args[]) throws ParseException, NullTaskException {
 
 		ArrayTaskList firstTaskList = new ArrayTaskList();
-
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 		Task firstTask = null;
 		Task secondTask = null;
