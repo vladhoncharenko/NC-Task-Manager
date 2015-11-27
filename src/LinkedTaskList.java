@@ -1,3 +1,4 @@
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -5,6 +6,43 @@ public class LinkedTaskList extends TaskList {
 
 	public LinkedTaskList() {
 
+	}
+
+	public class Node {
+		public Task task;
+		public Node next;
+		public Node previous;
+
+		public Node(Node previousConstructor, Task elementConstructor, Node nextConstructor) {
+			task = elementConstructor;
+			next = nextConstructor;
+			previous = previousConstructor;
+		}
+
+		public Task getData() {
+			return task;
+		}
+
+		public Node getNext() {
+			return next;
+		}
+
+		public Node getPrevious() {
+			return next;
+		}
+
+		public void displayLink() {
+			System.out.print(task.getTitle() + "\n");
+
+		}
+
+	}
+
+	public Node first;
+	public Node last;
+
+	public int size() {
+		return size;
 	}
 
 	@Override
@@ -141,6 +179,60 @@ public class LinkedTaskList extends TaskList {
 			return nextTask;
 		}
 
+	}
+
+	public Object clone() throws CloneNotSupportedException {
+
+		LinkedTaskList clonedTaskList = new LinkedTaskList();
+
+		clonedTaskList.first = clonedTaskList.last = null;
+
+		for (Node x = first; x != null; x = x.next)
+			try {
+				clonedTaskList.add(x.task);
+			} catch (NullTaskException e) {
+
+				e.printStackTrace();
+			}
+
+		return clonedTaskList;
+
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 43;
+		int result = 4;
+		@SuppressWarnings("deprecation")
+		int r = this.getTask(this.index).getTime().getDay();
+		result = index > 5 ? prime * result * 3 : prime * result * 2;
+		result = prime * result + index + r;
+		result = prime * result + size;
+		return result;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TaskList other = (TaskList) obj;
+
+		int in = 0;
+		for (Task l : other) {
+			if (!l.equals(this.getTask(in))) {
+				return false;
+			}
+			in++;
+		}
+
+		return true;
 	}
 
 }

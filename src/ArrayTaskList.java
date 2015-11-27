@@ -1,4 +1,3 @@
-
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -9,6 +8,8 @@ public class ArrayTaskList extends TaskList {
 	public ArrayTaskList() {
 		basicArray = new Task[10];
 	}
+
+	Task[] basicArray;
 
 	@Override
 	public void add(Task task) throws NullTaskException {
@@ -41,8 +42,6 @@ public class ArrayTaskList extends TaskList {
 		}
 		return false;
 	}
-
-	
 
 	@Override
 	public Task getTask(int index) {
@@ -96,11 +95,60 @@ public class ArrayTaskList extends TaskList {
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(basicArray);
+		result = prime * result + index;
+		result = prime * result + size;
+		return result;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArrayTaskList other = (ArrayTaskList) obj;
+
+		if (!Arrays.equals(basicArray, other.basicArray))
+			return false;
+
+		if (format == null) {
+			if (DateFormat.format != null)
+				return false;
+		} else if (!format.equals(DateFormat.format))
+			return false;
+		if (index != other.index)
+			return false;
+
+		if (size != other.size)
+			return false;
+
+		return true;
+
+	}
+
+	public Object clone() throws CloneNotSupportedException {
+
+		ArrayTaskList clonedArray = new ArrayTaskList();
+		for (Task l : this) {
+			try {
+				clonedArray.add(l);
+			} catch (NullTaskException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return clonedArray;
+
+	}
+
 }
