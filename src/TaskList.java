@@ -1,7 +1,11 @@
-abstract public class TaskList implements Iterable<Task>, Cloneable, DateFormat {
+import java.io.Serializable;
 
+abstract public class TaskList implements Iterable<Task>, Cloneable, DateFormat,Serializable {
+
+	
+	private static final long serialVersionUID = 1L;
 	public int size = 0;
-	public int index = 0;;
+	public int index = 0;
 
 	public void add(Task task) throws NullTaskException {
 	}

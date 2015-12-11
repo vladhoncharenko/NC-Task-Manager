@@ -1,5 +1,5 @@
 import java.text.SimpleDateFormat;
 
 public interface DateFormat {
-	 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+	 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
 }

@@ -1,10 +1,11 @@
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
 
-public class Task implements DateFormat {
+public class Task implements DateFormat,Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private Date time;
 	private Date start;
@@ -13,13 +14,13 @@ public class Task implements DateFormat {
 	private boolean active;
 	private boolean repeated;
 	Date currentDate = new Date();
-	static final long ONE_MINUTE_IN_MILLIS = 60000;
 
 	public Task(String titleConstructor, String timeConstructor) throws IOException, ParseException {
 
 		title = titleConstructor;
 		time = format.parse(timeConstructor);
 		repeated = false;
+		active=true;
 
 		if (time.before(currentDate))
 			throw new IOException("Time can not be negative");
@@ -33,6 +34,7 @@ public class Task implements DateFormat {
 		end = format.parse(endConstructor);
 		interval = intervalConstructor;
 		repeated = true;
+		active=true;
 
 		if (start.before(currentDate) || end.before(currentDate))
 			throw new IOException("Time can not be negative");
@@ -91,6 +93,9 @@ public class Task implements DateFormat {
 		return isRepeated() ? this.interval : 0;
 	}
 
+	public void setRepeatInterval(int Interval) {
+		this.interval=Interval;
+	}
 	public void setTime(String Start, String End, int Interval) throws IOException, ParseException {
 
 		this.start = format.parse(Start);
@@ -107,16 +112,29 @@ public class Task implements DateFormat {
 			throw new IOException("Interval can not be 0 or negative");
 
 	}
+	public void setTime(String Start, String End) throws IOException, ParseException {
 
-	Calendar date = Calendar.getInstance();
-	long t = date.getTimeInMillis();
-	Date afterAddingTenMins = new Date(t + (10 * ONE_MINUTE_IN_MILLIS));
+		this.start = format.parse(Start);
+		this.end = format.parse(End);
+		
+
+		if (!isRepeated()) {
+			this.repeated = true;
+
+		}
+		if (start.before(currentDate) || end.before(currentDate))
+			throw new IOException("Time can not be negative");
+		
+
+	}
+
+	
 
 	@SuppressWarnings("deprecation")
 	public Date nextTimeAfter(String currentS) throws IOException, ParseException {
 		Date current = format.parse(currentS);
 		if (current.before(currentDate))
-			throw new IOException("Interval can not be 0 or negative");
+			throw new IOException("Time can not be before this date");
 
 		if (isActive() && !isRepeated() && (current.before(this.time) || current.equals(this.time))) {
 			return this.time;

@@ -5,6 +5,9 @@ import java.util.NoSuchElementException;
 
 public class ArrayTaskList extends TaskList {
 
+	
+	private static final long serialVersionUID = 1L;
+
 	public ArrayTaskList() {
 		basicArray = new Task[10];
 	}

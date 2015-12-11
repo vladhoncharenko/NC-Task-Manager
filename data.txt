@@ -1,0 +1,5 @@
+"First" at [13-12-2016 22:30:00.000];
+"Third" at [10-12-2016 09:00:34.404];
+"Fourth" at [06-12-2016 10:40:00.341] inactive;
+"6-th ""easy"" task" from [12-12-2016 00:47:00.050] to [22-12-2016 12:42:00.000] every [3 days 18 hours 27 minutes 40 seconds];
+"7-th" from [05-12-2016 10:47:00.000] to [09-12-2016 23:47:00.005] every [1 day 14 hours 53 minutes 20 seconds].

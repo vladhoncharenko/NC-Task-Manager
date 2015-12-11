@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
@@ -7,7 +8,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class Tasks implements DateFormat {
+public class Tasks implements DateFormat,Serializable {
+
+	
+	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("deprecation")
 	public static Iterable<Task> incoming(Iterable<Task> tasks, String fromS, String toS)

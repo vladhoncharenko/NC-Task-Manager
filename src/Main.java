@@ -1,10 +1,23 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.text.ParseException;
 import java.util.Date;
 
-public class Main extends Tasks implements DateFormat {
+public class Main implements DateFormat {
 	@SuppressWarnings("deprecation")
-	public static void main(String args[]) throws ParseException, NullTaskException {
+	public static void main(String args[]) throws ParseException, NullTaskException, IOException {
 
 		ArrayTaskList firstTaskList = new ArrayTaskList();
 
@@ -20,16 +33,16 @@ public class Main extends Tasks implements DateFormat {
 
 		try {
 
-			firstTask = new Task("First A", "10-12-2015 19:59");
-			secondTask = new Task("Second", "11-12-2015 01:07", "11-12-2015 19:47", 25);
+			firstTask = new Task("First A", "10-12-2016 19:59:00.000");
+			secondTask = new Task("Second", "11-12-2016 01:07:00.000", "11-12-2016 19:47:00.000", 250);
 
-			taskOne = new Task("First ", "13-12-2015 22:30");
-			taskTwo = new Task("Second", "11-12-2015 15:07");
-			taskThree = new Task("Third ", "10-12-2015 9:00");
-			taskFour = new Task("Fourth ", "01-12-2015 10:40");
-			task5 = new Task("5-th", "03-12-2015 10:47", "23-12-2015 8:48", 10);
-			task6 = new Task("6-th ", "12-12-2015 00:47", "22-12-2015 12:42", 50);
-			task7 = new Task("7-th", "01-12-2015 10:47", "02-12-2015 23:47", 10);
+			taskOne = new Task("First", "13-12-2016 22:30:00.000");
+			taskTwo = new Task("Second", "11-12-2016 15:07:00.000");
+			taskThree = new Task("Third", "10-12-2016 9:00:34.404");
+			taskFour = new Task("Fourth", "06-12-2016 10:40:00.341");
+			task5 = new Task("5 \"Task\" -th", "05-12-2016 10:47:00.000", "23-12-2016 8:48:00.000", 100);
+			task6 = new Task("6-th \"easy\" task", "12-12-2016 00:47:00.050", "22-12-2016 12:42:00.000", 325660);
+			task7 = new Task("7-th", "05-12-2016 10:47:00.000", "09-12-2016 23:47:00.005", 140000);
 
 		} catch (IOException e4) {
 			System.err.println("\n" + e4.toString());
@@ -60,7 +73,7 @@ public class Main extends Tasks implements DateFormat {
 		System.out.println("Interval time of first task is " + secondTask.getRepeatInterval());
 
 		try {
-			System.out.println("\n" + "Next time of execution " + firstTask.nextTimeAfter("11-12-2015 10:40"));
+			System.out.println("\n" + "Next time of execution " + firstTask.nextTimeAfter("11-12-2016 10:40:00.000"));
 		} catch (IOException e4) {
 			System.err.println("\n" + e4.toString());
 		}
@@ -73,8 +86,8 @@ public class Main extends Tasks implements DateFormat {
 			System.err.println("\n" + e2.toString());
 		}
 
-		System.out.println("\n" + "In array Tasks are " + (firstTaskList.size()) + " objects" + "\n");
 
+		System.out.println("\n" + "In array Tasks are " + (firstTaskList.size()) + " objects" + "\n");
 		for (int i = 0; i < firstTaskList.size(); i++) {
 			System.out.println(firstTaskList.getTask(i).getTitle());
 		}
@@ -135,7 +148,7 @@ public class Main extends Tasks implements DateFormat {
 		System.out.println(newList.size());
 
 		try {
-			System.out.println(newList.getTask(55).getTitle());// My ex
+			System.out.println(newList.getTask(5).getTitle());
 		} catch (Exception e) {
 			System.err.println("\n" + e.toString());
 		}
@@ -171,7 +184,7 @@ public class Main extends Tasks implements DateFormat {
 				"Task 6's Hash Code = Task 6 clone's Hash Code?=" + (task6.hashCode() == task6clone.hashCode()));
 
 		try {
-			task6clone.setTime("01-12-2017 10:40");
+			task6clone.setTime("01-12-2017 10:40:00.00");
 		} catch (IOException e1) {
 
 			e1.printStackTrace();
@@ -230,7 +243,7 @@ public class Main extends Tasks implements DateFormat {
 		System.out.println("Task 7 to string:");
 		task7.toString();
 
-		String Timef = ("13-10-2015 10:40");
+		String Timef = ("13-10-2015 10:40:00.00.000");
 		Date Time = format.parse(Timef);
 		Time.setMinutes(Time.getMinutes() + 800);
 		System.out.println("+86" + Time.toString());
@@ -240,7 +253,7 @@ public class Main extends Tasks implements DateFormat {
 
 		try {
 
-			(incoming(firstTaskList, "24-11-2015 10:40", "25-12-2015 10:40")).toString();
+			(Tasks.incoming(firstTaskList, "24-11-2016 10:40:00.00", "25-12-2016 10:40:00.000")).toString();
 
 		} catch (IOException e) {
 			System.err.println("\n" + e.toString());
@@ -248,7 +261,7 @@ public class Main extends Tasks implements DateFormat {
 
 		System.out.println("\n" + "LL");
 		try {
-			(incoming(newList, "24-11-2015 10:40", "25-12-2015 10:40")).toString();
+			(Tasks.incoming(newList, "24-11-2016 10:40:00.00", "25-12-2016 10:40:00.000")).toString();
 
 		} catch (IOException e) {
 
@@ -264,13 +277,14 @@ public class Main extends Tasks implements DateFormat {
 		try {
 			firstTaskList.remove(task5);
 		} catch (NullTaskException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
 		newList.remove(task6clone);
 		newList.remove(taskFour);
 		newList.remove(taskTwo);
+		newList2.remove(task6clone);
 
 		System.out.println("Arr index:" + firstTaskList.index());
 		System.out.println("Linked index:" + newList.index());
@@ -280,20 +294,75 @@ public class Main extends Tasks implements DateFormat {
 
 		System.out.println("LL Calendar");
 		try {
-			calendar(newList, "25-11-2015 10:40", "20-12-2015 10:40");
+			Tasks.calendar(newList, "25-11-2016 10:40:00.000", "20-12-2016 10:40:00.000");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
 		System.out.println("Aray Calendar");
 
 		try {
-			calendar(firstTaskList, "25-11-2015 10:40", "20-12-2015 10:40");
+			Tasks.calendar(firstTaskList, "25-11-2016 10:40:00.000", "20-12-2016 10:40:00.000");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		taskFour.setActive(false);
+		
+		System.out.println("____INPUT/OUTPUT____");
+		System.out.println("____Binary IO Stream____");
+
+		LinkedTaskList LTL = new LinkedTaskList();
+		LinkedTaskList LTL2 = new LinkedTaskList();
+		System.out.println("List before:");
+		firstTaskList.toString();
+
+		OutputStream os = new DataOutputStream(new FileOutputStream("data.bin"));
+		TaskIO.write(firstTaskList, os);
+
+		System.out.println("List after:");
+		InputStream is = new DataInputStream(new FileInputStream("data.bin"));
+		TaskIO.read(LTL, is);
+
+		System.out.println("____Binary File IO____");
+
+		File taskBinaryFile = new File("D:\\WorkSpaceEclipse\\NC-Task-Manager-master\\tasksBinary.dat");
+
+		System.out.println("List before");
+		newList.toString();
+
+		TaskIO.writeBinary(newList, taskBinaryFile);
+		System.out.println("List after");
+		TaskIO.readBinary(LTL2, taskBinaryFile);
+
+		System.out.println("____Text IO Stream____");
+
+		System.out.println("List before");
+		firstTaskList.toString();
+
+		LinkedTaskList LTL3 = new LinkedTaskList();
+
+		Writer bw = new BufferedWriter(new FileWriter ("data.txt"));
+		TaskIO.write(firstTaskList, bw);
+
+		System.out.println("List after");
+		Reader inputStreamReader = new BufferedReader(new FileReader ("data.txt"));		
+		TaskIO.read(LTL3, inputStreamReader);
+
+		System.out.println("____Text File IO____");
+		
+		LinkedTaskList ATL2 = new LinkedTaskList();
+		File taskTextFile = new File("D:\\WorkSpaceEclipse\\NC-Task-Manager-master\\tasks.txt");
+
+		System.out.println("List before:");
+		newList2.toString();
+		
+		TaskIO.writeText(newList2, taskTextFile);
+
+		System.out.println("List after:");
+		TaskIO.readText(ATL2, taskTextFile);
+		
+		
 
 	}
 

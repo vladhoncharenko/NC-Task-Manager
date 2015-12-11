@@ -1,14 +1,20 @@
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class LinkedTaskList extends TaskList {
 
+	
+	private static final long serialVersionUID = 1L;
+
 	public LinkedTaskList() {
 
 	}
 
-	public class Node {
+	public class Node implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
 		public Task task;
 		public Node next;
 		public Node previous;
