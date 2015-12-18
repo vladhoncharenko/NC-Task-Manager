@@ -3,40 +3,74 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Linked List Implementation
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
+
 public class LinkedTaskList extends TaskList {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	public LinkedTaskList() {
 
 	}
 
+	/**
+	 * Class that allows to keep task,next and previous link in one object
+	 */
 	public class Node implements Serializable {
-		
+
 		private static final long serialVersionUID = 1L;
 		public Task task;
 		public Node next;
 		public Node previous;
 
+		/**
+		 * Node Class Constructor
+		 * 
+		 * @param previousConstructor
+		 * @param elementConstructor
+		 * @param nextConstructor
+		 */
 		public Node(Node previousConstructor, Task elementConstructor, Node nextConstructor) {
 			task = elementConstructor;
 			next = nextConstructor;
 			previous = previousConstructor;
 		}
 
+		/**
+		 * Returns task from object of this class
+		 * 
+		 * @return task
+		 */
 		public Task getData() {
 			return task;
 		}
 
+		/**
+		 * Returns next object in list
+		 * 
+		 * @return next
+		 */
 		public Node getNext() {
 			return next;
 		}
 
+		/**
+		 * Returns previous object in list
+		 * 
+		 * @return next
+		 */
 		public Node getPrevious() {
-			return next;
+			return previous;
 		}
 
+		/**
+		 * Shows title of current task
+		 */
 		public void displayLink() {
 			System.out.print(task.getTitle() + "\n");
 
@@ -47,10 +81,12 @@ public class LinkedTaskList extends TaskList {
 	public Node first;
 	public Node last;
 
-	public int size() {
-		return size;
-	}
-
+	/**
+	 * Adds tasks to task list
+	 * 
+	 * @param task
+	 * @throws NullTaskException
+	 */
 	@Override
 	public void add(Task task) throws NullTaskException {
 		if (task == null)
@@ -68,6 +104,13 @@ public class LinkedTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Removes task from task list
+	 * 
+	 * @param task
+	 * @return true if success
+	 * @return false if not success
+	 */
 	@Override
 	public boolean remove(Task task) {
 		if (task == null) {
@@ -90,6 +133,12 @@ public class LinkedTaskList extends TaskList {
 		return false;
 	}
 
+	/**
+	 * Gets task by index
+	 * 
+	 * @param index
+	 * @return x.task
+	 */
 	@Override
 	public Task getTask(int index) {
 		if (index < 0 || index > size)
@@ -107,6 +156,12 @@ public class LinkedTaskList extends TaskList {
 		}
 	}
 
+	/**
+	 * Deletes object links
+	 * 
+	 * @param x
+	 * @return element
+	 */
 	public Task unlink(Node x) {
 
 		final Task element = x.task;
@@ -132,7 +187,13 @@ public class LinkedTaskList extends TaskList {
 		return element;
 	}
 
-	Node getNode(int index) {
+	/**
+	 * Returns object of Node class
+	 * 
+	 * @param index
+	 * @return x
+	 */
+	public Node getNode(int index) {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException("Enter a valid task index, that exist's in this list");
 		if (index < (size >> 1)) {
@@ -148,6 +209,11 @@ public class LinkedTaskList extends TaskList {
 		}
 	}
 
+	/**
+	 * Outputs Linked Task List
+	 * 
+	 * @return null
+	 */
 	@Override
 	public String toString() {
 		Node current = first;
@@ -159,21 +225,39 @@ public class LinkedTaskList extends TaskList {
 		return null;
 	}
 
+	/**
+	 * Creates new Linked List Iterator
+	 * 
+	 * @return new LinkedListIterator()
+	 */
 	@Override
 	public Iterator<Task> iterator() {
 
 		return new LinkedListIterator();
 	}
 
+	/**
+	 * Own Iterator class for LinkedListIterator
+	 */
 	private class LinkedListIterator implements Iterator<Task> {
 
 		Node firstNodeTask = first;
 
+		/**
+		 * Checks, is task list has next element
+		 * 
+		 * @return true or false
+		 */
 		public boolean hasNext() {
 
 			return (firstNodeTask != null);
 		}
 
+		/**
+		 * Returns next task in task list
+		 * 
+		 * @return nextTask
+		 */
 		public Task next() {
 
 			if (!hasNext()) {
@@ -187,6 +271,12 @@ public class LinkedTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Clones Linked Task List
+	 * 
+	 * @return clonedTaskList
+	 * @throws CloneNotSupportedException
+	 */
 	public Object clone() throws CloneNotSupportedException {
 
 		LinkedTaskList clonedTaskList = new LinkedTaskList();
@@ -205,6 +295,11 @@ public class LinkedTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Returns unique code for object
+	 * 
+	 * @return result
+	 **/
 	@Override
 	public int hashCode() {
 
@@ -219,6 +314,12 @@ public class LinkedTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Returns true if both objects are equals
+	 * 
+	 * @param obj
+	 * @return true or false
+	 */
 	@Override
 	public boolean equals(Object obj) {
 

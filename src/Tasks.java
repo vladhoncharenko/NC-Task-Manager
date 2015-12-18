@@ -8,11 +8,27 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class Tasks implements DateFormat,Serializable {
+/**
+ * Class designed for working with task lists
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
 
-	
+public class Tasks implements DateFormat, Serializable {
+
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Creates Task List, that will execute from fromS to toS in future
+	 * 
+	 * @param tasks
+	 * @param fromS
+	 * @param toS
+	 * @return incomingTaskList
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	@SuppressWarnings("deprecation")
 	public static Iterable<Task> incoming(Iterable<Task> tasks, String fromS, String toS)
 			throws IOException, ParseException {
@@ -61,6 +77,17 @@ public class Tasks implements DateFormat,Serializable {
 
 	}
 
+	/**
+	 * Creates unique tasks calendar, that will execute from fromS to toS in
+	 * future
+	 * 
+	 * @param tasks
+	 * @param fromS
+	 * @param toS
+	 * @return null
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, String fromS, String toS)
 			throws IOException, ParseException {
 

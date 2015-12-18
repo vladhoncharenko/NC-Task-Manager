@@ -3,7 +3,14 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 
-public class Task implements DateFormat,Serializable {
+/**
+ * Class, that describes Task
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
+
+public class Task implements DateFormat, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String title;
@@ -15,16 +22,36 @@ public class Task implements DateFormat,Serializable {
 	private boolean repeated;
 	Date currentDate = new Date();
 
+	/**
+	 * Not repeated task constructor
+	 * 
+	 * @param titleConstructor
+	 * @param timeConstructor
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+
 	public Task(String titleConstructor, String timeConstructor) throws IOException, ParseException {
 
 		title = titleConstructor;
 		time = format.parse(timeConstructor);
 		repeated = false;
-		active=true;
+		active = true;
 
 		if (time.before(currentDate))
 			throw new IOException("Time can not be negative");
 	}
+
+	/**
+	 * Repeated task constructor
+	 * 
+	 * @param titleConstructor
+	 * @param startConstructor
+	 * @param endConstructor
+	 * @param intervalConstructor
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 
 	public Task(String titleConstructor, String startConstructor, String endConstructor, int intervalConstructor)
 			throws IOException, ParseException {
@@ -34,7 +61,7 @@ public class Task implements DateFormat,Serializable {
 		end = format.parse(endConstructor);
 		interval = intervalConstructor;
 		repeated = true;
-		active=true;
+		active = true;
 
 		if (start.before(currentDate) || end.before(currentDate))
 			throw new IOException("Time can not be negative");
@@ -42,34 +69,75 @@ public class Task implements DateFormat,Serializable {
 			throw new IOException("Interval can not be 0 or negative");
 	}
 
+	/**
+	 * Standard constructor
+	 */
 	public Task() {
 
 	}
 
+	/**
+	 * Returns task title
+	 * 
+	 * @return title
+	 */
 	public String getTitle() {
 		return this.title;
 	}
 
+	/**
+	 * Sets task title
+	 * 
+	 * @param Title
+	 */
 	public void setTitle(String Title) {
 		this.title = Title;
 	}
 
+	/**
+	 * Returns true if task is active, returns false if task is not active
+	 * 
+	 * @return this.active
+	 */
 	public boolean isActive() {
 		return this.active;
 	}
 
+	/**
+	 * Sets true if task is active, returns false if task is not active
+	 * 
+	 * @param Active
+	 */
 	public void setActive(boolean Active) {
 		this.active = Active;
 	}
 
+	/**
+	 * Returns true if task is repeated, returns false if task is not repeated
+	 * 
+	 * @return this.repeated
+	 */
 	public boolean isRepeated() {
 		return this.repeated;
 	}
 
+	/**
+	 * If task is repeated returns start time of task, if task is not repeated
+	 * returns time of task execution
+	 * 
+	 * @return !isRepeated() ? this.time : this.start
+	 */
 	public Date getTime() {
 		return !isRepeated() ? this.time : this.start;
 	}
 
+	/**
+	 * Sets not repeated task time, string types
+	 * 
+	 * @param Time
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void setTime(String Time) throws IOException, ParseException {
 
 		this.time = format.parse(Time);
@@ -81,21 +149,54 @@ public class Task implements DateFormat,Serializable {
 			throw new IOException("Time can not be negative");
 	}
 
+	/**
+	 * If task is repeated returns start time of task, if task is not repeated
+	 * returns time of task execution
+	 * 
+	 * @return this.start : this.time
+	 */
 	public Date getStartTime() {
 		return isRepeated() ? this.start : this.time;
 	}
 
+	/**
+	 * 
+	 * If task is repeated returns end time of task, if task is not repeated
+	 * returns time of task execution
+	 * 
+	 * @return isRepeated() ? this.end : this.time
+	 */
 	public Date getEndTime() {
 		return isRepeated() ? this.end : this.time;
 	}
 
+	/**
+	 * Returns repeat interval
+	 * 
+	 * @return isRepeated() ? this.interval : 0
+	 */
 	public int getRepeatInterval() {
 		return isRepeated() ? this.interval : 0;
 	}
 
+	/**
+	 * Sets repeat interval
+	 * 
+	 * @param Interval
+	 */
 	public void setRepeatInterval(int Interval) {
-		this.interval=Interval;
+		this.interval = Interval;
 	}
+
+	/**
+	 * Sets repeated task time
+	 * 
+	 * @param Start
+	 * @param End
+	 * @param Interval
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void setTime(String Start, String End, int Interval) throws IOException, ParseException {
 
 		this.start = format.parse(Start);
@@ -112,11 +213,19 @@ public class Task implements DateFormat,Serializable {
 			throw new IOException("Interval can not be 0 or negative");
 
 	}
+
+	/**
+	 * Sets repeated task start and end time, String types
+	 * 
+	 * @param Start
+	 * @param End
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void setTime(String Start, String End) throws IOException, ParseException {
 
 		this.start = format.parse(Start);
 		this.end = format.parse(End);
-		
 
 		if (!isRepeated()) {
 			this.repeated = true;
@@ -124,12 +233,17 @@ public class Task implements DateFormat,Serializable {
 		}
 		if (start.before(currentDate) || end.before(currentDate))
 			throw new IOException("Time can not be negative");
-		
 
 	}
 
-	
-
+	/**
+	 * Returns next task time execution after some date
+	 * 
+	 * @param currentS
+	 * @return Time
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	@SuppressWarnings("deprecation")
 	public Date nextTimeAfter(String currentS) throws IOException, ParseException {
 		Date current = format.parse(currentS);
@@ -155,6 +269,7 @@ public class Task implements DateFormat,Serializable {
 		}
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -169,6 +284,8 @@ public class Task implements DateFormat,Serializable {
 		return result;
 	}
 
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -220,6 +337,11 @@ public class Task implements DateFormat,Serializable {
 		}
 	}
 
+	/**
+	 * Outputs Task
+	 * 
+	 * @return null
+	 */
 	@Override
 	public String toString() {
 		if (this.isRepeated()) {
@@ -230,6 +352,7 @@ public class Task implements DateFormat,Serializable {
 		return null;
 	}
 
+	
 	public Task clone() {
 		Task newClonedTask = new Task();
 		if (this.isRepeated()) {
@@ -252,6 +375,12 @@ public class Task implements DateFormat,Serializable {
 		return newClonedTask;
 	}
 
+	/**
+	 * Sets not repeated task time,Date type
+	 * 
+	 * @param time2
+	 * @throws IOException
+	 */
 	private void setTime(Date time2) throws IOException {
 
 		this.time = time2;
@@ -263,6 +392,14 @@ public class Task implements DateFormat,Serializable {
 			throw new IOException("Time can not be negative");
 	}
 
+	/**
+	 * Sets repeated task time, Date type
+	 * 
+	 * @param start2
+	 * @param end2
+	 * @param interval2
+	 * @throws IOException
+	 */
 	private void setTime(Date start2, Date end2, int interval2) throws IOException {
 
 		this.start = start2;

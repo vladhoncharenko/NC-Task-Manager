@@ -15,6 +15,13 @@ import java.io.Writer;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * Main Class
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
+
 public class Main implements DateFormat {
 	@SuppressWarnings("deprecation")
 	public static void main(String args[]) throws ParseException, NullTaskException, IOException {
@@ -85,7 +92,6 @@ public class Main implements DateFormat {
 		} catch (NullTaskException e2) {
 			System.err.println("\n" + e2.toString());
 		}
-
 
 		System.out.println("\n" + "In array Tasks are " + (firstTaskList.size()) + " objects" + "\n");
 		for (int i = 0; i < firstTaskList.size(); i++) {
@@ -308,7 +314,7 @@ public class Main implements DateFormat {
 			e.printStackTrace();
 		}
 		taskFour.setActive(false);
-		
+
 		System.out.println("____INPUT/OUTPUT____");
 		System.out.println("____Binary IO Stream____");
 
@@ -342,27 +348,27 @@ public class Main implements DateFormat {
 
 		LinkedTaskList LTL3 = new LinkedTaskList();
 
-		Writer bw = new BufferedWriter(new FileWriter ("data.txt"));
+		Writer bw = new BufferedWriter(new FileWriter("data.txt"));
 		TaskIO.write(firstTaskList, bw);
 
 		System.out.println("List after");
-		Reader inputStreamReader = new BufferedReader(new FileReader ("data.txt"));		
+		Reader inputStreamReader = new BufferedReader(new FileReader("data.txt"));
 		TaskIO.read(LTL3, inputStreamReader);
 
 		System.out.println("____Text File IO____");
-		
+
 		LinkedTaskList ATL2 = new LinkedTaskList();
 		File taskTextFile = new File("D:\\WorkSpaceEclipse\\NC-Task-Manager-master\\tasks.txt");
 
 		System.out.println("List before:");
 		newList2.toString();
-		
+
 		TaskIO.writeText(newList2, taskTextFile);
 
 		System.out.println("List after:");
 		TaskIO.readText(ATL2, taskTextFile);
 		
-		
+	
 
 	}
 

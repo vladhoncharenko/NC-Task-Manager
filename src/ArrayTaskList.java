@@ -3,17 +3,33 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Array List Implementation
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
+
 public class ArrayTaskList extends TaskList {
 
-	
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * ArrayTaskList constructor, that creates basic array with capacity 10
+	 * elements
+	 */
 	public ArrayTaskList() {
 		basicArray = new Task[10];
 	}
 
-	Task[] basicArray;
+	private Task[] basicArray;
 
+	/**
+	 * Adds tasks to task list
+	 * 
+	 * @param task
+	 * @throws NullTaskException
+	 */
 	@Override
 	public void add(Task task) throws NullTaskException {
 		if (task == null)
@@ -27,10 +43,14 @@ public class ArrayTaskList extends TaskList {
 		index++;
 	}
 
-	public int size() {
-		return this.size;
-	}
-
+	/**
+	 * Removes task from task list
+	 * 
+	 * @param task
+	 * @return true if success
+	 * @return false if not success
+	 * @throws NullTaskException
+	 */
 	@Override
 	public boolean remove(Task task) throws NullTaskException {
 		if (task == null)
@@ -46,6 +66,12 @@ public class ArrayTaskList extends TaskList {
 		return false;
 	}
 
+	/**
+	 * Gets task by index
+	 * 
+	 * @param index
+	 * @return basicArray[index] one task from array
+	 */
 	@Override
 	public Task getTask(int index) {
 		if (index <= -1 || index > this.index)
@@ -55,6 +81,9 @@ public class ArrayTaskList extends TaskList {
 		return basicArray[index];
 	}
 
+	/**
+	 * Increases basic array on 10 elements
+	 */
 	public void increaseArray() {
 
 		int newSize = basicArray.length + 10;
@@ -62,6 +91,29 @@ public class ArrayTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Sets new value of task
+	 * 
+	 * @param index
+	 * @param task
+	 * @throws NullTaskException
+	 */
+	public void setNewValue(int index, Task task) throws NullTaskException {
+
+		if (index <= -1 || index > this.index)
+			throw new ArrayIndexOutOfBoundsException(
+					"Enter a valid task index, that exist's in array, in method setNewValue");
+		if (task == null)
+			throw new NullTaskException("Task can not be null");
+
+		basicArray[index] = task;
+	}
+
+	/**
+	 * Outputs Array Task List
+	 * 
+	 * @return null
+	 */
 	@Override
 	public String toString() {
 		for (int i = 0; i < index; i++) {
@@ -70,20 +122,38 @@ public class ArrayTaskList extends TaskList {
 		return null;
 	}
 
+	/**
+	 * Creates new Array List Iterator
+	 * 
+	 * @return new ArrayListIterator()
+	 */
 	@Override
 	public Iterator<Task> iterator() {
 
 		return new ArrayListIterator();
 	}
 
+	/**
+	 * Own Iterator class for ArrayListIterator
+	 */
 	private class ArrayListIterator implements Iterator<Task> {
 
 		int cursor;
 
+		/**
+		 * Checks, is task list has next element
+		 * 
+		 * @return true or false
+		 */
 		public boolean hasNext() {
 			return cursor != size;
 		}
 
+		/**
+		 * Returns next task in task list
+		 * 
+		 * @return elementData[i]
+		 */
 		public Task next() {
 
 			int i = cursor;
@@ -98,6 +168,11 @@ public class ArrayTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Returns unique code for object
+	 * 
+	 * @return result
+	 **/
 	@Override
 	public int hashCode() {
 
@@ -110,6 +185,12 @@ public class ArrayTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Returns true if both objects are equals
+	 * 
+	 * @param obj
+	 * @return true or false
+	 */
 	@Override
 	public boolean equals(Object obj) {
 
@@ -139,6 +220,12 @@ public class ArrayTaskList extends TaskList {
 
 	}
 
+	/**
+	 * Clones Array Task List
+	 * 
+	 * @return clonedArray
+	 * @throws CloneNotSupportedException
+	 */
 	public Object clone() throws CloneNotSupportedException {
 
 		ArrayTaskList clonedArray = new ArrayTaskList();

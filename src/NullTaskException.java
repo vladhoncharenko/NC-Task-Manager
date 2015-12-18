@@ -1,3 +1,9 @@
+/**
+ * Null Task Exception
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
 
 public class NullTaskException extends Exception {
 

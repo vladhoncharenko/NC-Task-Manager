@@ -18,8 +18,21 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class, that allow read/write Task Lists
+ * 
+ * @author Vlad Honcharenko
+ * @version 1.0
+ */
+
 public class TaskIO {
 
+	/**
+	 * Writes Task List in stream in binary form
+	 * 
+	 * @param tasks
+	 * @param outStream
+	 */
 	public static void write(TaskList tasks, OutputStream outStream) {
 		Calendar cal = Calendar.getInstance();
 		DataOutputStream dataOutputStream = new DataOutputStream(outStream);
@@ -94,6 +107,12 @@ public class TaskIO {
 		}
 	}
 
+	/**
+	 * Reads Task List from stream in binary form
+	 * 
+	 * @param tasks
+	 * @param inStream
+	 */
 	public static void read(TaskList tasks, InputStream inStream) {
 
 		DataInputStream dataInputStream = new DataInputStream(inStream);
@@ -156,6 +175,12 @@ public class TaskIO {
 		tasks.toString();
 	}
 
+	/**
+	 * Writes Task List in file in binary form
+	 * 
+	 * @param tasks
+	 * @param file
+	 */
 	public static void writeBinary(TaskList tasks, File file) {
 
 		FileOutputStream fileOutputStream = null;
@@ -182,6 +207,12 @@ public class TaskIO {
 		}
 	}
 
+	/**
+	 * Reads Task List from file in binary form
+	 * 
+	 * @param tasks
+	 * @param file
+	 */
 	public static void readBinary(TaskList tasks, File file) {
 
 		FileInputStream fileInputStream = null;
@@ -203,6 +234,12 @@ public class TaskIO {
 
 	}
 
+	/**
+	 * Writes Task List in stream in text form
+	 * 
+	 * @param tasks
+	 * @param out
+	 */
 	public static void write(TaskList tasks, Writer out) {
 
 		BufferedWriter bufferedWriter = null;
@@ -285,6 +322,12 @@ public class TaskIO {
 		}
 	}
 
+	/**
+	 * Reads Task List from stream in text form
+	 * 
+	 * @param tasks
+	 * @param in
+	 */
 	public static void read(TaskList tasks, Reader in) {
 
 		BufferedReader bufferedReader = new BufferedReader(in);
@@ -354,6 +397,9 @@ public class TaskIO {
 						System.err.println("\n" + "Text Read Add Task:" + e.toString());
 					}
 
+					if (oneTask.charAt(oneTask.length() - 1) == '.') {
+						break;
+					}
 				}
 			}
 		} catch (NumberFormatException e1) {
@@ -362,12 +408,24 @@ public class TaskIO {
 			System.err.println("\n" + "Text Read IO:" + e2.toString());
 		} catch (ParseException e3) {
 			System.err.println("\n" + "Text Read Parse:" + e3.toString());
+		} finally {
+			try {
+				bufferedReader.close();
+			} catch (IOException e3) {
+				System.err.println("\n" + "Text Read close():" + e3.toString());
+			}
 		}
-
 		tasks.toString();
 
 	}
 
+	/**
+	 * Writes Task List in file in text form
+	 * 
+	 * @param tasks
+	 * @param file
+	 * @throws IOException
+	 */
 	public static void writeText(TaskList tasks, File file) throws IOException {
 		FileWriter fileWriter = null;
 
@@ -390,6 +448,13 @@ public class TaskIO {
 		}
 	}
 
+	/**
+	 * Writes Task List from file in text form
+	 * 
+	 * @param tasks
+	 * @param file
+	 * @throws IOException
+	 */
 	public static void readText(TaskList tasks, File file) throws IOException {
 
 		FileReader fileReader = null;
