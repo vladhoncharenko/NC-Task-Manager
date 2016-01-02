@@ -364,7 +364,7 @@ public class Main implements DateFormat {
 
 		LinkedTaskList ATL2 = new LinkedTaskList();
 
-		ClassLoader classLoader2 = Main.class.getClassLoader();
+
 		File  taskTextFile = new File(classLoader.getResource("data/tasks.txt").getFile());
 
 

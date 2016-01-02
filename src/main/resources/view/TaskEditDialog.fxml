@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="app.controller.TaskEditorController">
+<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TaskEditorController">
    <children>
       <Button layoutX="316.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleOk" text="OK" />
       <Button layoutX="386.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
-      <Label layoutX="95.0" layoutY="229.0" text="Active:" />
-      <Label layoutX="95.0" layoutY="189.0" text="Interval:" />
-      <Label layoutX="95.0" layoutY="149.0" text="End Time:" />
-      <Label layoutX="95.0" layoutY="109.0" text="Start Time:" />
-      <Label layoutX="95.0" layoutY="69.0" text="Task Name:" />
-      <TextField fx:id="taskNameField" layoutX="184.0" layoutY="65.0" prefHeight="25.0" prefWidth="195.0" />
-      <TextField fx:id="taskStartDateField" layoutX="184.0" layoutY="105.0" prefHeight="25.0" prefWidth="195.0" />
-      <TextField fx:id="taskEndDateField" layoutX="184.0" layoutY="145.0" prefHeight="25.0" prefWidth="195.0" />
-      <TextField fx:id="taskIntervalField" layoutX="184.0" layoutY="185.0" prefHeight="25.0" prefWidth="195.0" />
-      <TextField fx:id="taskActiveField" layoutX="184.0" layoutY="225.0" prefHeight="25.0" prefWidth="95.0" />
+      <Label layoutX="106.0" layoutY="283.0" text="Active:" />
+      <Label layoutX="106.0" layoutY="243.0" text="Interval:" />
+      <Label layoutX="106.0" layoutY="172.0" text="End Time:" />
+      <Label layoutX="106.0" layoutY="100.0" text="Start Time:" />
+      <Label layoutX="106.0" layoutY="60.0" text="Task Name:" />
+      <TextField fx:id="taskNameField" layoutX="195.0" layoutY="56.0" prefHeight="25.0" prefWidth="195.0" />
+      <TextField fx:id="taskStartDateField" layoutX="195.0" layoutY="96.0" prefHeight="25.0" prefWidth="195.0" />
+      <TextField fx:id="taskEndDateField" layoutX="195.0" layoutY="168.0" prefHeight="25.0" prefWidth="195.0" />
+      <TextField fx:id="taskIntervalField" layoutX="195.0" layoutY="239.0" prefHeight="25.0" prefWidth="78.0" />
+      <TextField fx:id="taskActiveField" layoutX="195.0" layoutY="279.0" prefHeight="25.0" prefWidth="95.0" />
+      <DatePicker fx:id="startDatePicker" layoutX="195.0" layoutY="132.0" prefHeight="25.0" prefWidth="195.0" />
+      <Label layoutX="106.0" layoutY="136.0" text="Start Date:" />
+      <Label layoutX="106.0" layoutY="207.0" text="End Time:" />
+      <DatePicker fx:id="endDatePicker" layoutX="195.0" layoutY="201.0" prefHeight="25.0" prefWidth="195.0" />
+      <ChoiceBox fx:id="intervalCB" layoutX="293.0" layoutY="238.0" prefHeight="25.0" prefWidth="95.0" />
    </children>
 </AnchorPane>

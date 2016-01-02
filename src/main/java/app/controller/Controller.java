@@ -1,149 +1,202 @@
 package app.controller;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 
+import app.model.*;
+import app.util.DateUtil;
+import app.util.TimeInterval;
+import app.view.ShowTaskEditView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import app.Main;
-import app.model.Task;
-import app.util.DateUtil;
+
 
 public class Controller {
 
-	private ObservableList<Task> userData = FXCollections.observableArrayList();
 
-	@FXML
-	private TableView<Task> taskTable;
-
-	@FXML
-	private TableColumn<Task, String> taskName;
-
-	@FXML
-	private TableColumn<Task, String> taskTime;
-
-	@FXML
-	private Label taskNameLabel;
-	@FXML
-	private Label taskStartDateLabel;
-	@FXML
-	private Label taskEndDateLabel;
-	@FXML
-	private Label taskIntervalLabel;
-	@FXML
-	private Label taskActiveLabel;
-
-	public ObservableList<Task> getTaskData() {
-		return userData;
-	}
-
-	/**
-	 * Called when the user clicks on the delete button.
-	 */
-	@FXML
-	private void handleDeleteTask() {
-		int selectedIndex = taskTable.getSelectionModel().getSelectedIndex();
-		if (selectedIndex >= 0) {
-			taskTable.getItems().remove(selectedIndex);
-		} else {
-
-			Alert alert = new Alert(AlertType.WARNING);
-
-			alert.setTitle("No Selection");
-			alert.setHeaderText("No Task Selected");
-			alert.setContentText("Please select a task in the table.");
-
-			alert.showAndWait();
-		}
-	}
-
-	@FXML
-	private void initialize() throws IOException, ParseException {
-		initData();
-		taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-		taskTime.setCellValueFactory(new PropertyValueFactory<Task, String>("time"));
-
-		// taskName.setCellValueFactory(data -> data.getValue().getTitle());
-
-		taskTable.setItems(userData);
-
-		/*taskTable.getSelectionModel().selectedItemProperty()
-				.addListener((observable, oldValue, newValue) -> showTaskDetails(newValue));*/
+    private ObservableList<Task> userData = FXCollections.observableArrayList();
 
 
-		 taskTable.getSelectionModel().selectedItemProperty().addListener(new
-		  ChangeListener<Task>() { public void changed(ObservableValue<?
-                    extends Task> observable, Task oldValue, Task newValue) {
-		  showTaskDetails(newValue); } });
+    @FXML
+    private TableView<Task> taskTable;
+
+    @FXML
+    private TableColumn<Task, String> taskName;
+
+    @FXML
+    private TableColumn<Task, String> taskTime;
+
+    @FXML
+    private Label taskNameLabel;
+    @FXML
+    private Label taskStartDateLabel;
+    @FXML
+    private Label taskEndDateLabel;
+    @FXML
+    private Label taskIntervalLabel;
+    @FXML
+    private Label taskActiveLabel;
 
 
-	}
+    public ObservableList<Task> getTaskData() {
+        return userData;
+    }
 
-	private void showTaskDetails(Task task) {
-		if (task != null) {
+    /**
+     * Called when the user clicks on the delete button.
+     */
+    @FXML
+    private void handleDeleteTask() {
+        int selectedIndex = taskTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            taskTable.getItems().remove(selectedIndex);
+            writeData();
 
-			taskNameLabel.setText(task.getTitle());
-			taskStartDateLabel.setText(DateUtil.format(task.getStartTime()));
-			taskEndDateLabel.setText(DateUtil.format(task.getEndTime()));
-			taskIntervalLabel.setText(Integer.toString(task.getRepeatInterval()));
-			taskActiveLabel.setText(Boolean.toString(task.isActive()));
+        } else {
 
-		} else {
+            Alert alert = new Alert(AlertType.WARNING);
 
-			taskNameLabel.setText("");
-			taskStartDateLabel.setText("");
-			taskEndDateLabel.setText("");
-			taskIntervalLabel.setText("");
-			taskActiveLabel.setText("");
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Task Selected");
+            alert.setContentText("Please select a task in the table.");
 
-		}
-	}
+            alert.showAndWait();
+        }
+    }
 
-	private void initData() throws IOException, ParseException {
-		userData.add(new Task("Second", "11-12-2016 15:07:00.000"));
-		userData.add(new Task("Fourth", "06-12-2016 10:40:00.341"));
-		userData.add(new Task("5 \"Task\" -th", "05-12-2016 10:47:00.000", "23-12-2016 8:48:00.000", 100));
-		userData.add(new Task("6-th \"easy\" task", "12-12-2016 00:47:00.050", "22-12-2016 12:42:00.000", 325660));
-		userData.add(new Task("7-th", "05-12-2016 10:47:00.000", "09-12-2016 23:47:00.005", 140000));
-	}
+    @FXML
+    private void initialize() throws IOException, ParseException {
+        initData();
+        taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+        taskTime.setCellValueFactory(new PropertyValueFactory<Task, String>("time"));
 
-	@FXML
-	private void handleNewPerson() {
-		Task tempTask = new Task();
-		boolean okClicked = Main.showPersonEditDialog(tempTask);
-		if (okClicked) {
-			getTaskData().add(tempTask);
-		}
-	}
+        taskTable.setItems(userData);
 
-	@FXML
-	private void handleEditPerson() {
-		Task selectedPerson = taskTable.getSelectionModel().getSelectedItem();
+        taskTable.getSelectionModel().selectedItemProperty().addListener(new
+                                                                                 ChangeListener<Task>() {
+                                                                                     public void changed(ObservableValue<?
+                                                                                             extends Task> observable, Task oldValue, Task newValue) {
+                                                                                         showTaskDetails(newValue);
+                                                                                     }
+                                                                                 });
 
-		if (selectedPerson != null) {
-			boolean okClicked = Main.showPersonEditDialog(selectedPerson);
-			if (okClicked) {
-				showTaskDetails(selectedPerson);
-			}
+    }
 
-		} else {
+    private void showTaskDetails(Task task) {
+        if (task != null) {
 
-			Alert alert = new Alert(AlertType.WARNING);
+            taskNameLabel.setText(task.getTitle());
+            taskStartDateLabel.setText(DateUtil.format(task.getStartTime()));
+            taskEndDateLabel.setText(DateUtil.format(task.getEndTime()));
+            taskIntervalLabel.setText(TimeInterval.TimeToInterval(task));
+            taskActiveLabel.setText(Boolean.toString(task.isActive()));
 
-			alert.setTitle("No Selection");
-			alert.setHeaderText("No Task Selected");
-			alert.setContentText("Please select a Task in the table.");
+        } else {
 
-			alert.showAndWait();
-		}
-	}
+            taskNameLabel.setText("");
+            taskStartDateLabel.setText("");
+            taskEndDateLabel.setText("");
+            taskIntervalLabel.setText("");
+            taskActiveLabel.setText("");
+
+
+        }
+    }
+
+    private void initData() throws IOException, ParseException {
+        ArrayTaskList ud = new ArrayTaskList();
+        InputStream is = null;
+        try {
+            is = new DataInputStream(new FileInputStream("data.bin"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        TaskIO.read(ud, is);
+
+        for (Task l : ud) {
+            userData.add(l);
+        }
+
+
+    }
+
+    @FXML
+    private void handleNewPerson() {
+        Task tempTask = new Task();
+        boolean okClicked = ShowTaskEditView.showTaskEditDialog(tempTask);
+        if (okClicked) {
+            getTaskData().add(tempTask);
+            writeData();
+
+
+        }
+    }
+
+    @FXML
+    private void handleEditPerson() {
+        Task selectedPerson = taskTable.getSelectionModel().getSelectedItem();
+        int i = taskTable.getSelectionModel().getFocusedIndex();
+        if (selectedPerson != null) {
+
+            boolean okClicked = ShowTaskEditView.showTaskEditDialog(selectedPerson);
+
+            if (okClicked) {
+                Task selectedTask = taskTable.getSelectionModel().getSelectedItem();
+                showTaskDetails(selectedPerson);
+                writeData();
+
+                getTaskData().removeAll(getTaskData());
+
+
+                try {
+                    initData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                showTaskDetails(selectedTask);
+
+                taskTable.getSelectionModel().select(i);
+            }
+
+        } else {
+
+            Alert alert = new Alert(AlertType.WARNING);
+
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Task Selected");
+            alert.setContentText("Please select a Task in the table.");
+
+            alert.showAndWait();
+        }
+
+    }
+
+    private void writeData() {
+        ArrayTaskList ud = new ArrayTaskList();
+        for (Task l : getTaskData()) {
+            try {
+                ud.add(l);
+            } catch (NullTaskException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        OutputStream os = null;
+        try {
+            os = new DataOutputStream(new FileOutputStream("data.bin"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        TaskIO.write(ud, os);
+    }
 }

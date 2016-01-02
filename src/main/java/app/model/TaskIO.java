@@ -53,6 +53,7 @@ public class TaskIO {
 				if (l.isRepeated()) {
 					dataOutputStream.writeBoolean(true);
 					dataOutputStream.writeInt(l.getRepeatInterval());
+					dataOutputStream.writeUTF(l.getJavaFxTimeCoeff());
 
 					cal.setTime(l.getStartTime());
 
@@ -133,6 +134,7 @@ public class TaskIO {
 				try {
 					if (dataInputStream.readBoolean()) {
 						l.setRepeatInterval(dataInputStream.readInt());
+						l.setJavaFxTimeCoeff(dataInputStream.readUTF());
 
 						l.setTime(
 								dataInputStream.readShort() + "-" + dataInputStream.readShort() + "-"
@@ -173,7 +175,7 @@ public class TaskIO {
 				System.err.println("\n" + "Binary Read close():" + e3.toString());
 			}
 		}
-		tasks.toString();
+		//tasks.toString();
 	}
 
 	/**
@@ -416,7 +418,7 @@ public class TaskIO {
 				System.err.println("\n" + "Text Read close():" + e3.toString());
 			}
 		}
-		tasks.toString();
+		//tasks.toString();
 
 	}
 

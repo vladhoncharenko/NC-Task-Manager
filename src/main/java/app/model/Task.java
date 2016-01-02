@@ -21,7 +21,18 @@ public class Task implements DateFormat, Serializable {
 	private int interval;
 	private boolean active;
 	private boolean repeated;
+	private String javaFxTimeCoeff="Empty";
 	Date currentDate = new Date();
+
+
+	public String getJavaFxTimeCoeff() {
+		return javaFxTimeCoeff;
+	}
+
+	public void setJavaFxTimeCoeff(String javaFxTimeCoeff) {
+		this.javaFxTimeCoeff = javaFxTimeCoeff;
+	}
+
 
 	/**
 	 * Not repeated task constructor
