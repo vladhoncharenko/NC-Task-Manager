@@ -6,15 +6,23 @@ import java.text.ParseException;
 import app.model.*;
 import app.util.DateUtil;
 import app.util.TimeInterval;
+import app.view.CalendarView;
 import app.view.ShowTaskEditView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 
 public class Controller {
@@ -47,6 +55,7 @@ public class Controller {
     public ObservableList<Task> getTaskData() {
         return userData;
     }
+
 
     /**
      * Called when the user clicks on the delete button.
@@ -136,6 +145,11 @@ public class Controller {
 
 
         }
+    }
+
+    @FXML
+    private void handleCalendar() {
+        CalendarView.showCalendarDialog();
     }
 
     @FXML

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -37,9 +38,10 @@
                         <Label fx:id="taskEndDateLabel" layoutX="234.0" layoutY="131.0" text=" " />
                         <Label fx:id="taskIntervalLabel" layoutX="234.0" layoutY="171.0" text=" " />
                         <Label fx:id="taskActiveLabel" layoutX="234.0" layoutY="211.0" text=" " />
-                        <Button layoutX="375.0" layoutY="497.0" mnemonicParsing="false" onAction="#handleDeleteTask" text="Delete" />
-                        <Button layoutX="312.0" layoutY="497.0" mnemonicParsing="false" onAction="#handleEditPerson" text="Edit" />
-                        <Button layoutX="107.0" layoutY="497.0" mnemonicParsing="false" onAction="#handleNewPerson" text="New" />
+                        <Button layoutX="375.0" layoutY="484.0" mnemonicParsing="false" onAction="#handleDeleteTask" text="Delete" />
+                        <Button layoutX="312.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleEditPerson" text="Edit" />
+                        <Button layoutX="105.0" layoutY="487.0" mnemonicParsing="false" onAction="#handleNewPerson" text="New" />
+                        <Button layoutX="104.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCalendar" prefHeight="25.0" prefWidth="322.0" text="CALENDAR" />
                      </children></AnchorPane>
               </items>
             </SplitPane>
