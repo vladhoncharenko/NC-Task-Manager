@@ -42,6 +42,7 @@
                         <Button layoutX="312.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleEditPerson" text="Edit" />
                         <Button layoutX="105.0" layoutY="487.0" mnemonicParsing="false" onAction="#handleNewPerson" text="New" />
                         <Button layoutX="104.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCalendar" prefHeight="25.0" prefWidth="322.0" text="CALENDAR" />
+                        <Label fx:id="notifyLabel" layoutX="111.0" layoutY="288.0" prefHeight="17.0" prefWidth="301.0" text=" " />
                      </children></AnchorPane>
               </items>
             </SplitPane>

@@ -82,6 +82,7 @@ public class CalendarController implements DateFormat {
     }
 
     private void initData() throws IOException, ParseException {
+
         ArrayTaskList ud = new ArrayTaskList();
         InputStream is = null;
         try {
@@ -104,9 +105,10 @@ public class CalendarController implements DateFormat {
         }
         Collections.sort(userData2, new TaskComparator());
 
-
-
     }
+
+
+
 
     @FXML
     private void onBackButton() {
