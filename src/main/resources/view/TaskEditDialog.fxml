@@ -6,8 +6,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TaskEditorController">
    <children>
-      <Button layoutX="316.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleOk" text="OK" />
-      <Button layoutX="386.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+      <Button layoutX="266.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOk" text="OK" />
+      <Button layoutX="336.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
       <Label layoutX="106.0" layoutY="283.0" text="Active:" />
       <Label layoutX="106.0" layoutY="243.0" text="Interval:" />
       <Label layoutX="106.0" layoutY="172.0" text="End Time:" />
@@ -17,11 +17,11 @@
       <TextField fx:id="taskStartDateField" layoutX="195.0" layoutY="96.0" prefHeight="25.0" prefWidth="195.0" />
       <TextField fx:id="taskEndDateField" layoutX="195.0" layoutY="168.0" prefHeight="25.0" prefWidth="195.0" />
       <TextField fx:id="taskIntervalField" layoutX="195.0" layoutY="239.0" prefHeight="25.0" prefWidth="78.0" />
-      <TextField fx:id="taskActiveField" layoutX="195.0" layoutY="279.0" prefHeight="25.0" prefWidth="95.0" />
       <DatePicker fx:id="startDatePicker" layoutX="195.0" layoutY="132.0" prefHeight="25.0" prefWidth="195.0" />
       <Label layoutX="106.0" layoutY="136.0" text="Start Date:" />
       <Label layoutX="106.0" layoutY="207.0" text="End Time:" />
       <DatePicker fx:id="endDatePicker" layoutX="195.0" layoutY="201.0" prefHeight="25.0" prefWidth="195.0" />
       <ChoiceBox fx:id="intervalCB" layoutX="293.0" layoutY="238.0" prefHeight="25.0" prefWidth="95.0" />
+      <CheckBox fx:id="taskActiveCB" layoutX="195.0" layoutY="283.0" mnemonicParsing="false" />
    </children>
 </AnchorPane>

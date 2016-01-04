@@ -20,7 +20,7 @@ public class Task implements DateFormat, Serializable {
     private Date start;
     private Date end;
     private int interval;
-    private boolean active;
+    private boolean active=true;
     private boolean repeated;
     private String javaFxTimeCoeff = "Empty";
     private Date executionDate;

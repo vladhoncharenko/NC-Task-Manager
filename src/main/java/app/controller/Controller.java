@@ -50,6 +50,18 @@ public class Controller implements DateFormat {
     private Label taskActiveLabel;
     @FXML
     private Label notifyLabel;
+    @FXML
+    private Label intervalLabel;
+    @FXML
+    private Label endTimeLabel;
+    @FXML
+    private Label chooseLabel;
+    @FXML
+    private Label taskNLabel;
+    @FXML
+    private Label startLabel;
+    @FXML
+    private Label activeLabel;
 
     public ObservableList<Task> getTaskData() {
         return userData;
@@ -82,6 +94,21 @@ public class Controller implements DateFormat {
 
     @FXML
     private void initialize() throws IOException, ParseException {
+
+        taskNameLabel.setVisible(false);
+        taskStartDateLabel.setVisible(false);
+        taskEndDateLabel.setVisible(false);
+        taskIntervalLabel.setVisible(false);
+        taskActiveLabel.setVisible(false);
+        intervalLabel.setVisible(false);
+        endTimeLabel.setVisible(false);
+        taskEndDateLabel.setVisible(false);
+        intervalLabel.setVisible(false);
+        endTimeLabel.setVisible(false);
+        taskNLabel.setVisible(false);
+        startLabel.setVisible(false);
+        activeLabel.setVisible(false);
+
         logger.info("Initializing...");
         initData();
         logger.info("Data were initialized");
@@ -95,6 +122,7 @@ public class Controller implements DateFormat {
         taskTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
             public void changed(ObservableValue<? extends Task> observable, Task oldValue, Task newValue) {
                 showTaskDetails(newValue);
+
             }
         });
 
@@ -119,7 +147,7 @@ public class Controller implements DateFormat {
         LinkedTaskList ud2 = (LinkedTaskList) Tasks.incoming(ud, forTime, toTime);
 
         for (Task l : ud2) {
-              userDataCal.add(l);
+            userDataCal.add(l);
         }
         Collections.sort(userDataCal, new TaskComparator());
         logger.info("Notification was updated");
@@ -142,7 +170,13 @@ public class Controller implements DateFormat {
                         @Override
                         public void run() {
                             try {
-                                notifyLabel.setText("Next Task is " + setCal().get(0).getTitle() + " at " + setCal().get(0).getExecutionDate());
+                                if (setCal().size()!=0) {
+                                    notifyLabel.setText("Next Task is " + setCal().get(0).getTitle() + " at " + setCal().get(0).getExecutionDate());
+
+                                } else {
+                                    notifyLabel.setText("There are no tasks in 7 days to do");
+
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (ParseException e) {
@@ -158,25 +192,50 @@ public class Controller implements DateFormat {
     }
 
     private void showTaskDetails(Task task) {
+
         if (task != null) {
+            if (!task.isRepeated()) {
+                intervalLabel.setVisible(false);
+                endTimeLabel.setVisible(false);
+                taskEndDateLabel.setVisible(false);
+            } else {
+                intervalLabel.setVisible(true);
+                endTimeLabel.setVisible(true);
+                taskEndDateLabel.setVisible(true);
+            }
+            taskNameLabel.setVisible(true);
+            taskStartDateLabel.setVisible(true);
+            taskActiveLabel.setVisible(true);
+            taskNLabel.setVisible(true);
+            startLabel.setVisible(true);
+            activeLabel.setVisible(true);
+            taskIntervalLabel.setVisible(true);
 
             taskNameLabel.setText(task.getTitle());
             taskStartDateLabel.setText(DateUtil.format(task.getStartTime()));
             taskEndDateLabel.setText(DateUtil.format(task.getEndTime()));
             taskIntervalLabel.setText(TimeInterval.TimeToInterval(task));
-            taskActiveLabel.setText(Boolean.toString(task.isActive()));
+            taskActiveLabel.setText((task.isActive()) ? "Yes" : "No");
             logger.info("Task Details were showed");
+            chooseLabel.setVisible(false);
+        }else{
 
-        } else {
-
-            taskNameLabel.setText("");
-            taskStartDateLabel.setText("");
-            taskEndDateLabel.setText("");
-            taskIntervalLabel.setText("");
-            taskActiveLabel.setText("");
-
-
+            taskNameLabel.setVisible(false);
+            taskStartDateLabel.setVisible(false);
+            taskEndDateLabel.setVisible(false);
+            taskIntervalLabel.setVisible(false);
+            taskActiveLabel.setVisible(false);
+            intervalLabel.setVisible(false);
+            endTimeLabel.setVisible(false);
+            taskEndDateLabel.setVisible(false);
+            intervalLabel.setVisible(false);
+            endTimeLabel.setVisible(false);
+            taskNLabel.setVisible(false);
+            startLabel.setVisible(false);
+            activeLabel.setVisible(false);
+            chooseLabel.setVisible(true);
         }
+
     }
 
     private void initData() throws IOException, ParseException {
@@ -202,10 +261,13 @@ public class Controller implements DateFormat {
         Task tempTask = new Task();
         boolean okClicked = ShowTaskEditView.showTaskEditDialog(tempTask);
         if (okClicked) {
-            getTaskData().add(tempTask);
-            logger.info("New Task was added to list");
-            writeData();
-            logger.info("Data were written in handleNewTask()");
+            if(TaskEditorController.isOk) {
+                getTaskData().add(tempTask);
+                logger.info("New Task was added to list");
+                writeData();
+                logger.info("Data were written in handleNewTask()");
+                TaskEditorController.isOk=false;
+            }
         }
     }
 

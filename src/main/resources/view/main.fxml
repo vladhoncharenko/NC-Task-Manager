@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.Controller">
   <children>
@@ -26,21 +28,26 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <Label layoutX="109.0" layoutY="51.0" text="Task Name:" />
-                        <Label layoutX="109.0" layoutY="91.0" text="Start Time:" />
-                        <Label layoutX="109.0" layoutY="131.0" text="End Time:" />
-                        <Label layoutX="109.0" layoutY="171.0" text="Interval:" />
-                        <Label layoutX="109.0" layoutY="211.0" text="Active:" />
-                        <Label fx:id="taskNameLabel" layoutX="234.0" layoutY="51.0" text=" " />
-                        <Label fx:id="taskStartDateLabel" layoutX="234.0" layoutY="91.0" text=" " />
-                        <Label fx:id="taskEndDateLabel" layoutX="234.0" layoutY="131.0" text=" " />
-                        <Label fx:id="taskIntervalLabel" layoutX="234.0" layoutY="171.0" text=" " />
-                        <Label fx:id="taskActiveLabel" layoutX="234.0" layoutY="211.0" text=" " />
-                        <Button layoutX="375.0" layoutY="484.0" mnemonicParsing="false" onAction="#handleDeleteTask" text="Delete" />
-                        <Button layoutX="312.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleEditTask" text="Edit" />
-                        <Button layoutX="105.0" layoutY="487.0" mnemonicParsing="false" onAction="#handleNewTask" text="New" />
-                        <Button layoutX="104.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCalendar" prefHeight="25.0" prefWidth="322.0" text="CALENDAR" />
-                        <Label fx:id="notifyLabel" layoutX="111.0" layoutY="288.0" prefHeight="17.0" prefWidth="301.0" text=" " />
+                        <Label fx:id="taskNLabel" layoutX="114.0" layoutY="65.0" text="Task Name:" />
+                        <Label fx:id="startLabel" layoutX="114.0" layoutY="105.0" text="Start Time:" />
+                        <Label fx:id="endTimeLabel" layoutX="114.0" layoutY="145.0" text="End Time:" />
+                        <Label fx:id="intervalLabel" layoutX="114.0" layoutY="185.0" text="Interval:" />
+                        <Label fx:id="activeLabel" layoutX="114.0" layoutY="225.0" text="Active:" />
+                        <Label fx:id="taskNameLabel" layoutX="239.0" layoutY="65.0" text=" " />
+                        <Label fx:id="taskStartDateLabel" layoutX="239.0" layoutY="105.0" text=" " />
+                        <Label fx:id="taskEndDateLabel" layoutX="239.0" layoutY="145.0" text=" " />
+                        <Label fx:id="taskIntervalLabel" layoutX="239.0" layoutY="185.0" text=" " />
+                        <Label fx:id="taskActiveLabel" layoutX="239.0" layoutY="225.0" text=" " />
+                        <Button layoutX="368.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleDeleteTask" text="Delete" />
+                        <Button layoutX="305.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleEditTask" text="Edit" />
+                        <Button layoutX="98.0" layoutY="467.0" mnemonicParsing="false" onAction="#handleNewTask" text="New" />
+                        <Button layoutX="99.0" layoutY="518.0" mnemonicParsing="false" onAction="#handleCalendar" prefHeight="25.0" prefWidth="322.0" text="CALENDAR" />
+                        <Label fx:id="notifyLabel" layoutX="121.0" layoutY="302.0" prefHeight="17.0" prefWidth="301.0" text=" " />
+                        <Label fx:id="chooseLabel" layoutX="201.0" layoutY="122.0" text="Choose Task ">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
                      </children></AnchorPane>
               </items>
             </SplitPane>

@@ -2,6 +2,8 @@ package app.controller;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
+
 import app.util.DateUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,14 +26,14 @@ public class TaskEditorController {
     @FXML
     private TextField taskIntervalField;
     @FXML
-    private TextField taskActiveField;
-    @FXML
     private DatePicker startDatePicker;
     @FXML
     private DatePicker endDatePicker;
     @FXML
     private ChoiceBox<String> intervalCB;
-
+    @FXML
+    private CheckBox taskActiveCB;
+    protected static boolean isOk = false;
     ObservableList<String> listCB = FXCollections.observableArrayList("Day(s)", "Hour(s)", "Minute(s)", "Second(s)");
     final int[] coeff = new int[]{86400, 3600, 60, 1};
     private Stage dialogStage;
@@ -111,7 +113,7 @@ public class TaskEditorController {
         }
 
         taskIntervalField.setText(intervalValue);
-        taskActiveField.setText(Boolean.toString(task.isActive()));
+        taskActiveCB.setSelected(task.isActive());
         logger.info("Task was set");
     }
 
@@ -132,6 +134,8 @@ public class TaskEditorController {
      */
     @FXML
     private void handleOk() throws IOException, ParseException {
+        boolean ok = false;
+
         if (isInputValid()) {
             if (!((taskIntervalField.getText()).equals("")) && (Integer.parseInt(taskIntervalField.getText()) > 0)) {
                 if ((endDatePicker.getValue() != null) && (taskEndDateField.getText() != null)) {
@@ -155,27 +159,39 @@ public class TaskEditorController {
 
                         task.setTime((DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText()),
                                 (DateUtil.formatDate(endDatePicker.getValue()) + " " + taskEndDateField.getText()), intervalValue);
-                        task.setActive(taskActiveField.getText().equals("true"));
+                        task.setActive(taskActiveCB.isSelected());
+                        ok = true;
+                        isOk = true;
                     } else {
                         task.setTitle(taskNameField.getText());
                         task.setTime(DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText());
-                        task.setActive(taskActiveField.getText().equals("true"));
+                        task.setActive(taskActiveCB.isSelected());
+                        ok = true;
+                        isOk = true;
                     }
                 } else {
                     task.setTitle(taskNameField.getText());
                     task.setTime(DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText());
-                    task.setActive(taskActiveField.getText().equals("true"));
+                    task.setActive(taskActiveCB.isSelected());
+                    ok = true;
+                    isOk = true;
                 }
 
             } else {
                 task.setTitle(taskNameField.getText());
                 task.setTime(DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText());
-                task.setActive(taskActiveField.getText().equals("true"));
+                task.setActive(taskActiveCB.isSelected());
+                ok = true;
+                isOk = true;
             }
-            okClicked = true;
+
         }
+
+        okClicked = true;
         logger.info("Information was written in a task");
-        dialogStage.close();
+        if (ok) {
+            dialogStage.close();
+        }
     }
 
     /**
@@ -194,17 +210,51 @@ public class TaskEditorController {
     private boolean isInputValid() {
         String errorMessage = "";
 
+        Date c = new Date();
         if (taskNameField.getText() == null || taskNameField.getText().length() == 0) {
             errorMessage += "Enter a valid Task Name!\n";
         }
         if (taskStartDateField.getText() == null || taskStartDateField.getText().length() == 0) {
-            errorMessage += "Enter a valid Task Start Time!\n";
+
+            errorMessage += "Enter Task Start Time!";
+
+        }
+        if (startDatePicker.getValue() == null) {
+            errorMessage += "Choose a valid Task Start Date!\n";
+        }
+        if (startDatePicker.getValue() != null) {
+            if (DateUtil.formatLDtoDate(startDatePicker.getValue().plusDays(1)).before(c)) {
+                errorMessage += "Date can not be in the past!\n";
+            }
+        }
+        if (endDatePicker.getValue() != null) {
+
+            if (startDatePicker.getValue().isAfter(endDatePicker.getValue())) {
+                errorMessage += "Start Date can not be after End Date!\n";
+            }
+
         }
 
-        if (taskActiveField.getText() == null || taskActiveField.getText().length() == 0) {
-            errorMessage += "Enter true or false only!\n";
-        }
+        if ((taskIntervalField.getText().length() != 0)) {
 
+            if (!taskIntervalField.getText().matches("^[+-]?\\d+$")) {
+                errorMessage += "In Interval Field must be only numbers!\n";
+
+            }
+
+        }
+        if (taskStartDateField.getText().length() != 0) {
+            if (!taskStartDateField.getText().matches("([0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9])")) {
+                errorMessage += "In Task Start Time field must be only numbers HH:mm:ss.SSS!";
+            }
+        }
+        if (taskEndDateField.getText().length() != 0) {
+
+            if (!taskStartDateField.getText().matches("([0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9])")) {
+                errorMessage += "In Task End Time field must be only numbers, with pattern  HH:mm:ss.SSS!\n";
+            }
+
+        }
         if (errorMessage.length() == 0) {
             return true;
         } else {
@@ -214,7 +264,7 @@ public class TaskEditorController {
             alert.setTitle("Invalid Fields");
             alert.setHeaderText("Please enter a valid data!");
             alert.setContentText(errorMessage);
-            logger.warn("Data is not valid!"+errorMessage);
+            logger.warn("Data is not valid!" + errorMessage);
             alert.showAndWait();
 
             return false;

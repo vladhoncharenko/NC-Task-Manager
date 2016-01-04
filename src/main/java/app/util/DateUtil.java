@@ -21,6 +21,10 @@ public class DateUtil {
         Date convertToDate = Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         return format.format(convertToDate);
     }
+    public static Date formatLDtoDate(LocalDate date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
 
     public static String format(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");

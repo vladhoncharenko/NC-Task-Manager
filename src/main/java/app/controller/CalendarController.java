@@ -34,6 +34,14 @@ public class CalendarController implements DateFormat {
     private Label taskActiveLabel;
     @FXML
     private Button closeButton;
+    @FXML
+    private Label chooseLabel;
+    @FXML
+    private Label taskNLabel;
+    @FXML
+    private Label nextExecutionLabel;
+    @FXML
+    private Label actveLabel;
 
     private ObservableList<Task> userData2 = FXCollections.observableArrayList();
 
@@ -43,6 +51,9 @@ public class CalendarController implements DateFormat {
 
     @FXML
     private void initialize() throws IOException, ParseException {
+        taskNLabel.setVisible(false);
+        nextExecutionLabel.setVisible(false);
+        actveLabel.setVisible(false);
         initData();
         logger.info("Data were initialized");
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
@@ -59,7 +70,9 @@ public class CalendarController implements DateFormat {
 
     private void showTaskDetails(Task task) {
         if (task != null) {
-
+            taskNLabel.setVisible(true);
+            nextExecutionLabel.setVisible(true);
+            actveLabel.setVisible(true);
             taskNameLabel.setText(task.getTitle());
 
             if (task.isRepeated()) {
@@ -67,9 +80,13 @@ public class CalendarController implements DateFormat {
             } else {
                 taskExecutionTime.setText(DateUtil.format(task.getStartTime()));
             }
-            taskActiveLabel.setText(Boolean.toString(task.isActive()));
+            taskActiveLabel.setText((task.isActive()) ? "Yes" : "No");
+            chooseLabel.setVisible(false);
 
         } else {
+            taskNLabel.setVisible(false);
+            nextExecutionLabel.setVisible(false);
+            actveLabel.setVisible(false);
 
             taskNameLabel.setText("");
             taskExecutionTime.setText("");
