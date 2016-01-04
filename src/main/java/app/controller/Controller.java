@@ -20,28 +20,24 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import org.apache.log4j.Logger;
 
 public class Controller implements DateFormat {
 
+    final static Logger logger = Logger.getLogger(Controller.class);
 
     private ObservableList<Task> userData = FXCollections.observableArrayList();
     private ObservableList<Task> userDataCal = FXCollections.observableArrayList();
-
     @FXML
     private TableView<Task> taskTable;
-
     @FXML
     private TableColumn<Task, String> taskName;
-
     @FXML
     private TableColumn<Task, String> taskTime;
-
     @FXML
     private Label taskNameLabel;
     @FXML
@@ -52,7 +48,6 @@ public class Controller implements DateFormat {
     private Label taskIntervalLabel;
     @FXML
     private Label taskActiveLabel;
-
     @FXML
     private Label notifyLabel;
 
@@ -66,43 +61,42 @@ public class Controller implements DateFormat {
      */
     @FXML
     private void handleDeleteTask() {
+
         int selectedIndex = taskTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             taskTable.getItems().remove(selectedIndex);
+            logger.info("Task was deleted");
             writeData();
+            logger.info("Data were written in handleDeleteTask()");
 
         } else {
 
             Alert alert = new Alert(AlertType.WARNING);
-
             alert.setTitle("No Selection");
             alert.setHeaderText("No Task Selected");
             alert.setContentText("Please select a task in the table.");
-
+            logger.warn("Task deleting error");
             alert.showAndWait();
         }
     }
 
     @FXML
     private void initialize() throws IOException, ParseException {
+        logger.info("Initializing...");
         initData();
-
+        logger.info("Data were initialized");
         startScheduledExecutorService();
-
 
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
         taskTime.setCellValueFactory(new PropertyValueFactory<Task, String>("time"));
 
         taskTable.setItems(userData);
 
-        taskTable.getSelectionModel().selectedItemProperty().addListener(new
-                                                                                 ChangeListener<Task>() {
-                                                                                     public void changed(ObservableValue<?
-                                                                                             extends Task> observable, Task oldValue, Task newValue) {
-                                                                                         showTaskDetails(newValue);
-                                                                                     }
-                                                                                 });
-
+        taskTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+            public void changed(ObservableValue<? extends Task> observable, Task oldValue, Task newValue) {
+                showTaskDetails(newValue);
+            }
+        });
 
     }
 
@@ -125,43 +119,43 @@ public class Controller implements DateFormat {
         LinkedTaskList ud2 = (LinkedTaskList) Tasks.incoming(ud, forTime, toTime);
 
         for (Task l : ud2) {
-            System.out.println(l.getTitle());
-            userDataCal.add(l);
+              userDataCal.add(l);
         }
         Collections.sort(userDataCal, new TaskComparator());
+        logger.info("Notification was updated");
         return userDataCal;
     }
 
-
+    //300 Mb RAM
     private void startScheduledExecutorService() {
-
-        final ScheduledExecutorService scheduler= Executors.newScheduledThreadPool(1);
+        logger.info("startScheduledExecutorService started");
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         scheduler.scheduleAtFixedRate(new Runnable() {
-                    int counter = 0;
-                    @Override
-                    public void run() {
-                        counter++;
-                        if (counter <= 100000) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        notifyLabel.setText("Next Task is " + setCal().get(0).getTitle() + " at " + setCal().get(0).getExecutionDate());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
+            int counter = 0;
 
+            @Override
+            public void run() {
+                counter++;
+                if (counter <= 100000) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                notifyLabel.setText("Next Task is " + setCal().get(0).getTitle() + " at " + setCal().get(0).getExecutionDate());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
+                    });
 
-                },0,1,TimeUnit.SECONDS);
+                }
+            }
+
+        }, 0, 1, TimeUnit.SECONDS);
     }
-
 
     private void showTaskDetails(Task task) {
         if (task != null) {
@@ -171,6 +165,7 @@ public class Controller implements DateFormat {
             taskEndDateLabel.setText(DateUtil.format(task.getEndTime()));
             taskIntervalLabel.setText(TimeInterval.TimeToInterval(task));
             taskActiveLabel.setText(Boolean.toString(task.isActive()));
+            logger.info("Task Details were showed");
 
         } else {
 
@@ -187,61 +182,65 @@ public class Controller implements DateFormat {
     private void initData() throws IOException, ParseException {
         ArrayTaskList ud = new ArrayTaskList();
         InputStream is = null;
+
         try {
             is = new DataInputStream(new FileInputStream("data.bin"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        logger.info("New inputStream created");
         TaskIO.read(ud, is);
-
+        logger.info("Data has been read");
         for (Task l : ud) {
             userData.add(l);
         }
 
-
     }
 
     @FXML
-    private void handleNewPerson() {
+    private void handleNewTask() {
         Task tempTask = new Task();
         boolean okClicked = ShowTaskEditView.showTaskEditDialog(tempTask);
         if (okClicked) {
             getTaskData().add(tempTask);
+            logger.info("New Task was added to list");
             writeData();
-
-
+            logger.info("Data were written in handleNewTask()");
         }
     }
 
     @FXML
     private void handleCalendar() {
+        logger.info("Showing calendar dialog window...");
         CalendarView.showCalendarDialog();
     }
 
     @FXML
-    private void handleEditPerson() {
-        Task selectedPerson = taskTable.getSelectionModel().getSelectedItem();
+    private void handleEditTask() {
+        Task selectedTask = taskTable.getSelectionModel().getSelectedItem();
         int i = taskTable.getSelectionModel().getFocusedIndex();
-        if (selectedPerson != null) {
+        if (selectedTask != null) {
 
-            boolean okClicked = ShowTaskEditView.showTaskEditDialog(selectedPerson);
+            boolean okClicked = ShowTaskEditView.showTaskEditDialog(selectedTask);
 
             if (okClicked) {
-                Task selectedTask = taskTable.getSelectionModel().getSelectedItem();
-                showTaskDetails(selectedPerson);
+                Task selectedTask2 = taskTable.getSelectionModel().getSelectedItem();
+                showTaskDetails(selectedTask);
                 writeData();
 
                 getTaskData().removeAll(getTaskData());
+                logger.info("All tasks were removed");
 
                 try {
                     initData();
+                    logger.info("Data were reinitialized");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                showTaskDetails(selectedTask);
+                showTaskDetails(selectedTask2);
 
                 taskTable.getSelectionModel().select(i);
             }
@@ -249,11 +248,10 @@ public class Controller implements DateFormat {
         } else {
 
             Alert alert = new Alert(AlertType.WARNING);
-
             alert.setTitle("No Selection");
             alert.setHeaderText("No Task Selected");
             alert.setContentText("Please select a Task in the table.");
-
+            logger.warn("No Task Selected");
             alert.showAndWait();
         }
 
@@ -269,15 +267,15 @@ public class Controller implements DateFormat {
             }
         }
 
-
         OutputStream os = null;
         try {
             os = new DataOutputStream(new FileOutputStream("data.bin"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        logger.info("New DataOutputStream was opened");
         TaskIO.write(ud, os);
+        logger.info("Data were written in binary file");
     }
-
 
 }

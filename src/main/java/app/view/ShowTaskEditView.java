@@ -7,12 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-
 public class ShowTaskEditView {
-
-
 
     public static boolean showTaskEditDialog(Task task) {
         try {

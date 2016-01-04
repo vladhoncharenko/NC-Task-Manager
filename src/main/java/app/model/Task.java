@@ -23,10 +23,6 @@ public class Task implements DateFormat, Serializable {
     private boolean active;
     private boolean repeated;
     private String javaFxTimeCoeff = "Empty";
-
-
-
-
     private Date executionDate;
     Date currentDate = new Date();
 

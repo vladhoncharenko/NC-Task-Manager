@@ -10,10 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import app.model.Task;
+import org.apache.log4j.Logger;
 
 
 public class TaskEditorController {
-
+    final static Logger logger = Logger.getLogger(TaskEditorController.class);
     @FXML
     private TextField taskNameField;
     @FXML
@@ -32,10 +33,7 @@ public class TaskEditorController {
     private ChoiceBox<String> intervalCB;
 
     ObservableList<String> listCB = FXCollections.observableArrayList("Day(s)", "Hour(s)", "Minute(s)", "Second(s)");
-
     final int[] coeff = new int[]{86400, 3600, 60, 1};
-
-
     private Stage dialogStage;
     private Task task;
     private boolean okClicked = false;
@@ -48,7 +46,7 @@ public class TaskEditorController {
     private void initialize() {
         intervalCB.setItems(listCB);
         intervalCB.setValue("Day(s)");
-
+        logger.info("Data were initialized");
     }
 
     /**
@@ -61,7 +59,7 @@ public class TaskEditorController {
     }
 
     /**
-     * Sets the person to be edited in the dialog.
+     * Sets the task to be edited in the dialog.
      *
      * @param task
      */
@@ -84,7 +82,6 @@ public class TaskEditorController {
         taskStartDateField.setPromptText("HH:mm:ss.SSS");
         startDatePicker.setPromptText("Select start date");
 
-
         if (task.getEndTime() != null) {
             taskEndDateField.setText(DateUtil.formatDateToTime(task.getEndTime()));
             try {
@@ -95,7 +92,6 @@ public class TaskEditorController {
         }
         taskEndDateField.setPromptText("HH:mm:ss.SSS");
         endDatePicker.setPromptText("Select end date");
-
 
         String intervalValue = "";
 
@@ -115,10 +111,8 @@ public class TaskEditorController {
         }
 
         taskIntervalField.setText(intervalValue);
-
-
         taskActiveField.setText(Boolean.toString(task.isActive()));
-
+        logger.info("Task was set");
     }
 
     /**
@@ -141,7 +135,8 @@ public class TaskEditorController {
         if (isInputValid()) {
             if (!((taskIntervalField.getText()).equals("")) && (Integer.parseInt(taskIntervalField.getText()) > 0)) {
                 if ((endDatePicker.getValue() != null) && (taskEndDateField.getText() != null)) {
-                    if (!(DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText()).equals(DateUtil.formatDate(endDatePicker.getValue()) + " " + taskEndDateField.getText())) {
+                    if (!(DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText()).equals(DateUtil.formatDate(endDatePicker.getValue())
+                            + " " + taskEndDateField.getText())) {
                         task.setTitle(taskNameField.getText());
 
                         int intervalValue;
@@ -158,8 +153,8 @@ public class TaskEditorController {
                             intervalValue = Integer.parseInt(taskIntervalField.getText()) * coeff[3];
                         }
 
-                        task.setTime((DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText()), (DateUtil.formatDate(endDatePicker.getValue()) + " " + taskEndDateField.getText()),
-                                intervalValue);
+                        task.setTime((DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText()),
+                                (DateUtil.formatDate(endDatePicker.getValue()) + " " + taskEndDateField.getText()), intervalValue);
                         task.setActive(taskActiveField.getText().equals("true"));
                     } else {
                         task.setTitle(taskNameField.getText());
@@ -177,10 +172,9 @@ public class TaskEditorController {
                 task.setTime(DateUtil.formatDate(startDatePicker.getValue()) + " " + taskStartDateField.getText());
                 task.setActive(taskActiveField.getText().equals("true"));
             }
-
+            okClicked = true;
         }
-
-        okClicked = true;
+        logger.info("Information was written in a task");
         dialogStage.close();
     }
 
@@ -207,7 +201,6 @@ public class TaskEditorController {
             errorMessage += "Enter a valid Task Start Time!\n";
         }
 
-
         if (taskActiveField.getText() == null || taskActiveField.getText().length() == 0) {
             errorMessage += "Enter true or false only!\n";
         }
@@ -221,11 +214,11 @@ public class TaskEditorController {
             alert.setTitle("Invalid Fields");
             alert.setHeaderText("Please enter a valid data!");
             alert.setContentText(errorMessage);
+            logger.warn("Data is not valid!"+errorMessage);
             alert.showAndWait();
 
             return false;
         }
     }
-
 
 }

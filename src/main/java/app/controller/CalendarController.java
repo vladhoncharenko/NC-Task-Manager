@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.text.ParseException;
@@ -20,7 +21,7 @@ import java.util.Date;
 
 public class CalendarController implements DateFormat {
 
-
+    final static Logger logger = Logger.getLogger(CalendarController.class);
     @FXML
     private TableView<Task> taskTable;
     @FXML
@@ -40,21 +41,19 @@ public class CalendarController implements DateFormat {
         return userData2;
     }
 
-
     @FXML
     private void initialize() throws IOException, ParseException {
         initData();
+        logger.info("Data were initialized");
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 
         taskTable.setItems(userData2);
 
-        taskTable.getSelectionModel().selectedItemProperty().addListener(new
-                                                                                 ChangeListener<Task>() {
-                                                                                     public void changed(ObservableValue<?
-                                                                                             extends Task> observable, Task oldValue, Task newValue) {
-                                                                                         showTaskDetails(newValue);
-                                                                                     }
-                                                                                 });
+        taskTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+            public void changed(ObservableValue<? extends Task> observable, Task oldValue, Task newValue) {
+                showTaskDetails(newValue);
+            }
+        });
 
     }
 
@@ -63,9 +62,9 @@ public class CalendarController implements DateFormat {
 
             taskNameLabel.setText(task.getTitle());
 
-            if(task.isRepeated()){
+            if (task.isRepeated()) {
                 taskExecutionTime.setText((DateUtil.format(task.getExecutionDate())));
-            }else {
+            } else {
                 taskExecutionTime.setText(DateUtil.format(task.getStartTime()));
             }
             taskActiveLabel.setText(Boolean.toString(task.isActive()));
@@ -77,8 +76,8 @@ public class CalendarController implements DateFormat {
 
             taskActiveLabel.setText("");
 
-
         }
+        logger.info("Task was set");
     }
 
     private void initData() throws IOException, ParseException {
@@ -100,20 +99,17 @@ public class CalendarController implements DateFormat {
         LinkedTaskList ud2 = (LinkedTaskList) Tasks.incoming(ud, forTime, toTime);
 
         for (Task l : ud2) {
-            System.out.println(l.getTitle());
             userData2.add(l);
         }
         Collections.sort(userData2, new TaskComparator());
 
     }
 
-
-
-
     @FXML
     private void onBackButton() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+        logger.info("Calendar window was closed");
     }
 
 

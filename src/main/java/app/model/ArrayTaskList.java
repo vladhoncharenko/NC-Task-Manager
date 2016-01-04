@@ -237,7 +237,6 @@ public class ArrayTaskList extends TaskList {
 				e.printStackTrace();
 			}
 		}
-
 		return clonedArray;
 
 	}
