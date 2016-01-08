@@ -78,7 +78,7 @@ public class TaskEditorController {
             try {
                 startDatePicker.setValue(DateUtil.formatLocaleDateToDate(task.getStartTime()));
             } catch (ParseException e) {
-                e.printStackTrace();
+                logger.error("In setTask()-", e);
             }
         }
         taskStartDateField.setPromptText("HH:mm:ss.SSS");
@@ -89,7 +89,7 @@ public class TaskEditorController {
             try {
                 endDatePicker.setValue(DateUtil.formatLocaleDateToDate(task.getEndTime()));
             } catch (ParseException e) {
-                e.printStackTrace();
+                logger.error("In setTask()-", e);
             }
         }
         taskEndDateField.setPromptText("HH:mm:ss.SSS");

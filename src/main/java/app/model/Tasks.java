@@ -1,5 +1,7 @@
 package app.model;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -16,6 +18,7 @@ import java.util.Map.Entry;
 public class Tasks implements DateFormat, Serializable {
 
     private static final long serialVersionUID = 1L;
+    final static Logger logger = Logger.getLogger(Tasks.class);
 
     /**
      * Creates Task List, that will execute from fromS to toS in future
@@ -49,7 +52,7 @@ public class Tasks implements DateFormat, Serializable {
 
 
                         } catch (NullTaskException e) {
-                            System.err.println("\n" + e.toString());
+                            logger.error("Not repeated tasks; incoming():", e);
                         }
 
                     }
@@ -65,7 +68,7 @@ public class Tasks implements DateFormat, Serializable {
                             ((TaskList) incomingTaskList).add(((TaskList) tasks).getTask(i));
                             ((TaskList) tasks).getTask(i).setExecutionDate(Time);
                         } catch (NullTaskException e) {
-                            System.err.println("\n" + e.toString());
+                            logger.error("Repeated tasks; incoming():", e);
                         }
                         break beginOfTheCycle;
                     }

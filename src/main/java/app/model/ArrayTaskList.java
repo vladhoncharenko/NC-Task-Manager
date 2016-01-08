@@ -1,4 +1,6 @@
 package app.model;
+import org.apache.log4j.Logger;
+
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -12,7 +14,7 @@ import java.util.NoSuchElementException;
  */
 
 public class ArrayTaskList extends TaskList {
-
+	final static Logger logger = Logger.getLogger(ArrayTaskList.class);
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -234,7 +236,7 @@ public class ArrayTaskList extends TaskList {
 			try {
 				clonedArray.add(l);
 			} catch (NullTaskException e) {
-				e.printStackTrace();
+				logger.error("In clone()-", e);
 			}
 		}
 		return clonedArray;

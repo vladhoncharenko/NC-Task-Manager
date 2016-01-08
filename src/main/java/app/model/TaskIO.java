@@ -1,4 +1,6 @@
 package app.model;
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -27,7 +29,7 @@ import java.util.regex.Pattern;
  */
 
 public class TaskIO {
-
+	final static Logger logger = Logger.getLogger(TaskIO.class);
 	/**
 	 * Writes Task List in stream in binary form
 	 * 
@@ -90,20 +92,20 @@ public class TaskIO {
 				}
 			}
 		} catch (IOException e) {
-			System.err.println("\n" + "Binary Write:" + e.toString());
+			  logger.error("Binary Write:", e);
 
 		} finally {
 
 			try {
 				dataOutputStream.flush();
 			} catch (IOException e2) {
-				System.err.println("\n" + "Binary Write flush():" + e2.toString());
+				logger.error("Binary Write flush():", e2);
 			}
 
 			try {
 				dataOutputStream.close();
 			} catch (IOException e3) {
-				System.err.println("\n" + "Binary Write close():" + e3.toString());
+				logger.error("Binary Write close():", e3);
 			}
 
 		}
@@ -154,25 +156,26 @@ public class TaskIO {
 								+ dataInputStream.readShort());
 					}
 				} catch (ParseException e) {
-
-					System.err.println("\n" + "Binary Read Parse:" + e.toString());
+					logger.error("Binary Read Parse:", e);
 				}
 
 				try {
 					tasks.add(l);
 				} catch (NullTaskException e1) {
+					logger.error("Binary Read Add Task:", e1);
 
-					System.err.println("\n" + "Binary Read Add Task:" + e1.toString());
 				}
 			}
 		} catch (IOException e2) {
-			System.err.println("\n" + "Binary Read:" + e2.toString());
+			logger.error("Binary Read:", e2);
+
 
 		} finally {
 			try {
 				dataInputStream.close();
 			} catch (IOException e3) {
-				System.err.println("\n" + "Binary Read close():" + e3.toString());
+				logger.error("Binary Read close():", e3);
+
 			}
 		}
 		//tasks.toString();
@@ -190,7 +193,8 @@ public class TaskIO {
 		try {
 			fileOutputStream = new FileOutputStream(file);
 		} catch (FileNotFoundException e1) {
-			System.err.println("\n" + "Binary File Write:" + e1.toString());
+			logger.error("Binary File Write:", e1);
+
 		}
 
 		try {
@@ -198,14 +202,16 @@ public class TaskIO {
 
 		} finally {
 			try {
-				fileOutputStream.flush();
+				if (fileOutputStream != null) {
+					fileOutputStream.flush();
+				}
 			} catch (IOException e) {
-				System.err.println("\n" + "Binary File Write flush():" + e.toString());
+				logger.error("Binary File Write flush():", e);
 			}
 			try {
 				fileOutputStream.close();
 			} catch (IOException e2) {
-				System.err.println("\n" + "Binary File Write close():" + e2.toString());
+				logger.error("Binary File Write close():", e2);
 			}
 		}
 	}
@@ -222,16 +228,18 @@ public class TaskIO {
 		try {
 			fileInputStream = new FileInputStream(file);
 		} catch (FileNotFoundException e1) {
-			System.err.println("\n" + "Binary File Read:" + e1.toString());
+			logger.error("Binary File Read:", e1);
 		}
 
 		try {
 			read(tasks, fileInputStream);
 		} finally {
 			try {
-				fileInputStream.close();
+				if (fileInputStream != null) {
+					fileInputStream.close();
+				}
 			} catch (IOException e) {
-				System.err.println("\n" + "Binary File Read close():" + e.toString());
+				logger.error("Binary File Read close():):", e);
 			}
 		}
 
@@ -309,18 +317,20 @@ public class TaskIO {
 				taskCounter++;
 			}
 		} catch (IOException e) {
-			System.err.println("\n" + "Text Write:" + e.toString());
+			logger.error("Text Write:", e);
 
 		} finally {
 			try {
-				bufferedWriter.flush();
+				if (bufferedWriter != null) {
+					bufferedWriter.flush();
+				}
 			} catch (IOException e1) {
-				System.err.println("\n" + "Text Write flush():" + e1.toString());
+				logger.error("Text Write flush():", e1);
 			}
 			try {
 				bufferedWriter.close();
 			} catch (IOException e2) {
-				System.err.println("\n" + "Text Write close():" + e2.toString());
+				logger.error("Text Write close():", e2);
 			}
 		}
 	}
@@ -398,6 +408,7 @@ public class TaskIO {
 						tasks.add(newTask);
 					} catch (NullTaskException e) {
 						System.err.println("\n" + "Text Read Add Task:" + e.toString());
+						logger.error("Text Read Add Task:", e);
 					}
 
 					if (oneTask.charAt(oneTask.length() - 1) == '.') {
@@ -406,16 +417,16 @@ public class TaskIO {
 				}
 			}
 		} catch (NumberFormatException e1) {
-			System.err.println("\n" + "Text Read Format:" + e1.toString());
+			logger.error("Text Read Format:", e1);
 		} catch (IOException e2) {
-			System.err.println("\n" + "Text Read IO:" + e2.toString());
+			logger.error("Text Read IO:", e2);
 		} catch (ParseException e3) {
-			System.err.println("\n" + "Text Read Parse:" + e3.toString());
+			logger.error("Text Read Parse:", e3);
 		} finally {
 			try {
 				bufferedReader.close();
 			} catch (IOException e3) {
-				System.err.println("\n" + "Text Read close():" + e3.toString());
+				logger.error("Text Read close():", e3);
 			}
 		}
 		//tasks.toString();
@@ -436,7 +447,7 @@ public class TaskIO {
 			fileWriter = new FileWriter(file);
 
 		} catch (FileNotFoundException e1) {
-			System.err.println("\n" + "Text File Write:" + e1.toString());
+			logger.error("Text File Write:", e1);
 		}
 
 		try {
@@ -444,9 +455,11 @@ public class TaskIO {
 
 		} finally {
 			try {
-				fileWriter.close();
+				if (fileWriter != null) {
+					fileWriter.close();
+				}
 			} catch (IOException e2) {
-				System.err.println("\n" + "Text File Write close():" + e2.toString());
+				logger.error("Text File Write close():", e2);
 			}
 		}
 	}
@@ -464,16 +477,18 @@ public class TaskIO {
 		try {
 			fileReader = new FileReader(file);
 		} catch (FileNotFoundException e1) {
-			System.err.println("\n" + "Text File Read:" + e1.toString());
+		    	logger.error("Text File Read:", e1);
 		}
 
 		try {
 			read(tasks, fileReader);
 		} finally {
 			try {
-				fileReader.close();
+				if (fileReader != null) {
+					fileReader.close();
+				}
 			} catch (IOException e) {
-				System.err.println("\n" + "Text File Read close():" + e.toString());
+				logger.error("Text File Read close():", e);
 			}
 		}
 

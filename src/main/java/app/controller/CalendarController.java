@@ -104,7 +104,7 @@ public class CalendarController implements DateFormat {
         try {
             is = new DataInputStream(new FileInputStream("data.bin"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error("In initData()-", e);
         }
         TaskIO.read(ud, is);
 

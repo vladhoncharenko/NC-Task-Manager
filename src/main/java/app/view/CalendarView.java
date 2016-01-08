@@ -4,9 +4,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 public class CalendarView {
-
+    final static Logger logger = Logger.getLogger(CalendarView.class);
     public static boolean showCalendarDialog() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(CalendarView.class.getResource("/view/Calendar.fxml"));
@@ -17,7 +18,7 @@ public class CalendarView {
             stage.show();
             return true;
         } catch(Exception e) {
-            e.printStackTrace();
+            logger.error("In showCalendarDialog()-", e);
             return false;
         }
     }

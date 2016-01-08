@@ -1,4 +1,6 @@
 package app.model;
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -13,7 +15,7 @@ import java.util.NoSuchElementException;
 public class LinkedTaskList extends TaskList {
 
 	private static final long serialVersionUID = 1L;
-
+	final static Logger logger = Logger.getLogger(LinkedTaskList.class);
 	public LinkedTaskList() {
 
 	}
@@ -288,7 +290,7 @@ public class LinkedTaskList extends TaskList {
 				clonedTaskList.add(x.task);
 			} catch (NullTaskException e) {
 
-				e.printStackTrace();
+				logger.error("In clone()-", e);
 			}
 
 		return clonedTaskList;

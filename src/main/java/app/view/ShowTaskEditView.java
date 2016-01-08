@@ -7,9 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 public class ShowTaskEditView {
-
+    final static Logger logger = Logger.getLogger(ShowTaskEditView.class);
     public static boolean showTaskEditDialog(Task task) {
         try {
 
@@ -32,7 +34,7 @@ public class ShowTaskEditView {
 
             return controller.isOkClicked();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("In showTaskEditDialog()-", e);
             return false;
         }
     }

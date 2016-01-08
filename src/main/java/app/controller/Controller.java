@@ -137,8 +137,7 @@ public class Controller implements DateFormat {
         try {
             is = new DataInputStream(new FileInputStream("data.bin"));
         } catch (FileNotFoundException e) {
-            //TODO заполнить все error
-            logger.error("", e);
+            logger.error("In SetCalendar()-", e);
         }
         TaskIO.read(ud, is);
 
@@ -181,9 +180,9 @@ public class Controller implements DateFormat {
 
                                 }
                             } catch (IOException e1) {
-                                e1.printStackTrace();
+                                logger.error("In startScheduledExecutorService()-", e1);
                             } catch (ParseException e2) {
-                                e2.printStackTrace();
+                                logger.error("In startScheduledExecutorService()-", e2);
                             }
                         }
                     });
@@ -248,7 +247,7 @@ public class Controller implements DateFormat {
         try {
             is = new DataInputStream(new FileInputStream("data.bin"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error("In initData()-", e);
         }
         logger.info("New inputStream created");
         TaskIO.read(ud, is);
@@ -314,9 +313,9 @@ public class Controller implements DateFormat {
                     initData();
                     logger.info("Data were reinitialized");
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    logger.error("In  handleEditTask()-", e);
+                } catch (ParseException e1) {
+                    logger.error("In  handleEditTask()-", e1);
                 }
 
                 showTaskDetails(selectedTask2);
@@ -343,7 +342,7 @@ public class Controller implements DateFormat {
             try {
                 ud.add(l);
             } catch (NullTaskException e) {
-                e.printStackTrace();
+                logger.error("In writeData()-", e);
             }
         }
 
@@ -351,7 +350,7 @@ public class Controller implements DateFormat {
         try {
             os = new DataOutputStream(new FileOutputStream("data.bin"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error("In writeData()-", e);
         }
         logger.info("New DataOutputStream was opened");
         TaskIO.write(ud, os);

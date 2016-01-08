@@ -1,5 +1,7 @@
 package app.model;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -15,6 +17,7 @@ import java.util.Date;
 public class Task implements DateFormat, Serializable {
 
     private static final long serialVersionUID = 1L;
+    final static Logger logger = Logger.getLogger(Task.class);
     private String title;
     private Date time;
     private Date start;
@@ -376,7 +379,7 @@ public class Task implements DateFormat, Serializable {
             try {
                 newClonedTask.setTime(this.start, this.end, this.interval);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("In clone()-", e);
             }
 
             return newClonedTask;
@@ -385,8 +388,7 @@ public class Task implements DateFormat, Serializable {
         try {
             newClonedTask.setTime(this.time);
         } catch (IOException e) {
-
-            e.printStackTrace();
+            logger.error("In clone()-", e);
         }
         return newClonedTask;
     }
