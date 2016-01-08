@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -77,10 +78,20 @@ public class Controller implements DateFormat {
 
         int selectedIndex = taskTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
-            taskTable.getItems().remove(selectedIndex);
-            logger.info("Task was deleted");
-            writeData();
-            logger.info("Data were written in handleDeleteTask()");
+
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Delete");
+            alert.setHeaderText("Do you want delete this task?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                taskTable.getItems().remove(selectedIndex);
+                logger.info("Task was deleted");
+                writeData();
+                logger.info("Data were written in handleDeleteTask()");
+            } else {
+
+            }
 
         } else {
 
