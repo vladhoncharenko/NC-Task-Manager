@@ -23,7 +23,7 @@ public class Task implements DateFormat, Serializable {
     private Date start;
     private Date end;
     private int interval;
-    private boolean active=true;
+    private boolean active = true;
     private boolean repeated;
     private String javaFxTimeCoeff = "Empty";
     private Date executionDate;
@@ -37,6 +37,7 @@ public class Task implements DateFormat, Serializable {
     public void setJavaFxTimeCoeff(String javaFxTimeCoeff) {
         this.javaFxTimeCoeff = javaFxTimeCoeff;
     }
+
     public Date getExecutionDate() {
         return executionDate;
     }
@@ -60,7 +61,7 @@ public class Task implements DateFormat, Serializable {
         time = format.parse(timeConstructor);
         repeated = false;
         active = true;
-        executionDate=format.parse(timeConstructor);
+        executionDate = format.parse(timeConstructor);
 
     }
 
@@ -167,7 +168,7 @@ public class Task implements DateFormat, Serializable {
             this.repeated = false;
         }
         if (!isRepeated()) {
-            executionDate=format.parse(Time);
+            executionDate = format.parse(Time);
         }
 
     }

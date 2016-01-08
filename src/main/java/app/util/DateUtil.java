@@ -27,12 +27,12 @@ public class DateUtil {
     }
 
     public static String format(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return format.format(date);
     }
 
     public static String formatDateToTime(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss.SSS");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
         return format.format(date);
     }
 }

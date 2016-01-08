@@ -1,7 +1,9 @@
 package app.controller;
 
 import java.io.*;
+import java.text.Format;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -30,8 +32,6 @@ import org.apache.log4j.Logger;
 public class Controller implements DateFormat {
 
     final static Logger logger = Logger.getLogger(Controller.class);
-
-
     private ObservableList<Task> userData = FXCollections.observableArrayList();
     private ObservableList<Task> userDataCal = FXCollections.observableArrayList();
     @FXML
@@ -127,8 +127,8 @@ public class Controller implements DateFormat {
         startScheduledExecutorService();
 
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+        //taskTime.setCellValueFactory(new PropertyValueFactory<Task, String>(formatter.format(format2.parse("time"))));
         taskTime.setCellValueFactory(new PropertyValueFactory<Task, String>("time"));
-
         taskTable.setItems(userData);
 
         taskTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
@@ -162,7 +162,7 @@ public class Controller implements DateFormat {
             userDataCal.add(l);
         }
         Collections.sort(userDataCal, new TaskComparator());
-        logger.debug("Notification was updated");
+
         return userDataCal;
     }
 
@@ -183,7 +183,7 @@ public class Controller implements DateFormat {
                         public void run() {
                             try {
                                 if (setCalendar().size()!=0) {
-                                    notifyLabel.setText("Next Task is " + setCalendar().get(0).getTitle() + " at " + setCalendar().get(0).getExecutionDate());
+                                    notifyLabel.setText("Next Task is  " + setCalendar().get(0).getTitle() + "  at  " + formatter.format(setCalendar().get(0).getExecutionDate()));
                                     Date firstDateInterval = new Date();
                                     firstDateInterval.setTime(firstDateInterval.getTime() - 2000);
                                     Date secondDateInterval = new Date();
@@ -209,6 +209,7 @@ public class Controller implements DateFormat {
                             } catch (ParseException e2) {
                                 logger.error("In startScheduledExecutorService()-", e2);
                             }
+                            logger.debug("Notification was updated");
                         }
                     });
 

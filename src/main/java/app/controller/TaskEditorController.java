@@ -80,7 +80,7 @@ public class TaskEditorController {
                 logger.error("In setTask()-", e);
             }
         }
-        taskStartDateField.setPromptText("HH:mm:ss.SSS");
+        taskStartDateField.setPromptText("HH:mm:ss");
         startDatePicker.setPromptText("Select start date");
 
         if (task.getEndTime() != null) {
@@ -91,7 +91,7 @@ public class TaskEditorController {
                 logger.error("In setTask()-", e);
             }
         }
-        taskEndDateField.setPromptText("HH:mm:ss.SSS");
+        taskEndDateField.setPromptText("HH:mm:ss");
         endDatePicker.setPromptText("Select end date");
 
         String intervalValue = "";
@@ -243,14 +243,14 @@ public class TaskEditorController {
 
         }
         if (taskStartDateField.getText().length() != 0) {
-            if (!taskStartDateField.getText().matches("([0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9])")) {
-                errorMessage += "In Task Start Time field must be only numbers HH:mm:ss.SSS!";
+            if (!taskStartDateField.getText().matches("([0-2][0-9]:[0-5][0-9]:[0-5][0-9])")) {
+                errorMessage += "In Task Start Time field must be only numbers HH:mm:ss!";
             }
         }
         if (taskEndDateField.getText().length() != 0) {
 
-            if (!taskStartDateField.getText().matches("([0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9])")) {
-                errorMessage += "In Task End Time field must be only numbers, with pattern  HH:mm:ss.SSS!\n";
+            if (!taskEndDateField.getText().matches("([0-2][0-9]:[0-5][0-9]:[0-5][0-9])")) {
+                errorMessage += "In Task End Time field must be only numbers, with pattern  HH:mm:ss!\n";
             }
 
         }
