@@ -58,8 +58,7 @@ public class Task implements DateFormat, Serializable {
         repeated = false;
         active = true;
         executionDate=format.parse(timeConstructor);
-        if (time.before(currentDate))
-            throw new IOException("Time can not be negative");
+
     }
 
     /**
@@ -167,8 +166,7 @@ public class Task implements DateFormat, Serializable {
         if (!isRepeated()) {
             executionDate=format.parse(Time);
         }
-        if (time.before(currentDate))
-            throw new IOException("Time can not be negative");
+
     }
 
     /**
@@ -406,8 +404,7 @@ public class Task implements DateFormat, Serializable {
         if (isRepeated()) {
             this.repeated = false;
         }
-        if (time.before(currentDate))
-            throw new IOException("Time can not be negative");
+
     }
 
     /**
@@ -428,8 +425,7 @@ public class Task implements DateFormat, Serializable {
             this.repeated = true;
 
         }
-        if (start.before(currentDate) || end.before(currentDate))
-            throw new IOException("Time can not be negative");
+
         if (interval2 <= 0)
             throw new IOException("Interval can not be 0 or negative");
 

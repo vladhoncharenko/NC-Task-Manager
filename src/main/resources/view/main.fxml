@@ -42,7 +42,7 @@
                         <Button layoutX="305.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleEditTask" text="Edit" />
                         <Button layoutX="98.0" layoutY="467.0" mnemonicParsing="false" onAction="#handleNewTask" text="New" />
                         <Button layoutX="99.0" layoutY="518.0" mnemonicParsing="false" onAction="#handleCalendar" prefHeight="25.0" prefWidth="322.0" text="This week plan" />
-                        <Label fx:id="notifyLabel" layoutX="121.0" layoutY="302.0" prefHeight="17.0" prefWidth="301.0" text=" " />
+                        <Label fx:id="notifyLabel" layoutX="121.0" layoutY="302.0" onMouseClicked="#onNotifyClicked" prefHeight="17.0" prefWidth="301.0" textOverrun="CLIP" underline="true" />
                         <Label fx:id="chooseLabel" layoutX="201.0" layoutY="122.0" text="Choose Task ">
                            <font>
                               <Font name="System Bold" size="20.0" />

@@ -20,10 +20,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import org.apache.log4j.Logger;
 
 public class Controller implements DateFormat {
@@ -128,14 +130,15 @@ public class Controller implements DateFormat {
 
     }
 
-    protected ObservableList<Task> setCal() throws IOException, ParseException {
+    protected ObservableList<Task> setCalendar() throws IOException, ParseException {
         userDataCal.clear();
         ArrayTaskList ud = new ArrayTaskList();
         InputStream is = null;
         try {
             is = new DataInputStream(new FileInputStream("data.bin"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //TODO заполнить все error
+            logger.error("", e);
         }
         TaskIO.read(ud, is);
 
@@ -170,17 +173,17 @@ public class Controller implements DateFormat {
                         @Override
                         public void run() {
                             try {
-                                if (setCal().size()!=0) {
-                                    notifyLabel.setText("Next Task is " + setCal().get(0).getTitle() + " at " + setCal().get(0).getExecutionDate());
+                                if (setCalendar().size()!=0) {
+                                    notifyLabel.setText("Next Task is " + setCalendar().get(0).getTitle() + " at " + setCalendar().get(0).getExecutionDate());
 
                                 } else {
                                     notifyLabel.setText("There are no tasks in 7 days to do");
 
                                 }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            } catch (ParseException e2) {
+                                e2.printStackTrace();
                             }
                         }
                     });
@@ -276,6 +279,20 @@ public class Controller implements DateFormat {
         logger.info("Showing calendar dialog window...");
         CalendarView.showCalendarDialog();
     }
+    @FXML
+    private void onNotifyClicked() {
+
+        try {
+            showTaskDetails(setCalendar().get(0));
+            taskTable.getSelectionModel().select(setCalendar().get(0));
+        } catch (IOException e1) {
+            logger.error("onNotifyClicked-", e1);
+        } catch (ParseException e2) {
+            logger.error("onNotifyClicked-", e2);
+        }
+
+
+    }
 
     @FXML
     private void handleEditTask() {
@@ -319,6 +336,7 @@ public class Controller implements DateFormat {
 
     }
 
+
     private void writeData() {
         ArrayTaskList ud = new ArrayTaskList();
         for (Task l : getTaskData()) {
@@ -339,5 +357,6 @@ public class Controller implements DateFormat {
         TaskIO.write(ud, os);
         logger.info("Data were written in binary file");
     }
+
 
 }
