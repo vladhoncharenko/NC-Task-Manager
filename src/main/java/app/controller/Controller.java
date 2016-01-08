@@ -20,17 +20,16 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import org.apache.log4j.Logger;
 
 public class Controller implements DateFormat {
 
     final static Logger logger = Logger.getLogger(Controller.class);
+
 
     private ObservableList<Task> userData = FXCollections.observableArrayList();
     private ObservableList<Task> userDataCal = FXCollections.observableArrayList();
@@ -152,7 +151,7 @@ public class Controller implements DateFormat {
             userDataCal.add(l);
         }
         Collections.sort(userDataCal, new TaskComparator());
-        logger.info("Notification was updated");
+        logger.debug("Notification was updated");
         return userDataCal;
     }
 
@@ -174,6 +173,21 @@ public class Controller implements DateFormat {
                             try {
                                 if (setCalendar().size()!=0) {
                                     notifyLabel.setText("Next Task is " + setCalendar().get(0).getTitle() + " at " + setCalendar().get(0).getExecutionDate());
+                                    Date firstDateInterval = new Date();
+                                    firstDateInterval.setTime(firstDateInterval.getTime() - 2000);
+                                    Date secondDateInterval = new Date();
+                                    secondDateInterval.setTime(secondDateInterval.getTime() + 2000);
+                                    if((setCalendar().get(0).getExecutionDate()).after(firstDateInterval)&&(setCalendar().get(0).getExecutionDate()).before(secondDateInterval)){
+                                        String message =setCalendar().get(0).getTitle() ;
+                                        Alert alert = new Alert(AlertType.INFORMATION);
+                                        alert.setTitle("Next Task");
+                                        alert.setHeaderText("It is time for:");
+                                        alert.setContentText(message);
+                                        logger.warn(message);
+                                        alert.showAndWait();
+                                    }
+
+
 
                                 } else {
                                     notifyLabel.setText("There are no tasks in 7 days to do");
@@ -190,7 +204,7 @@ public class Controller implements DateFormat {
                 }
             }
 
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 2, TimeUnit.SECONDS);
     }
 
     private void showTaskDetails(Task task) {

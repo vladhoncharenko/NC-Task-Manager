@@ -3,7 +3,6 @@ package app.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
-
 import app.util.DateUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
