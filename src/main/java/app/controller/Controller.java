@@ -1,9 +1,7 @@
 package app.controller;
 
 import java.io.*;
-import java.text.Format;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -11,6 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import app.model.*;
 import app.model.Task;
 import app.util.DateUtil;
@@ -34,6 +33,10 @@ public class Controller implements DateFormat {
     final static Logger logger = Logger.getLogger(Controller.class);
     private ObservableList<Task> userData = FXCollections.observableArrayList();
     private ObservableList<Task> userDataCal = FXCollections.observableArrayList();
+    private ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    private File dataFile;
+
+
     @FXML
     private TableView<Task> taskTable;
     @FXML
@@ -84,7 +87,7 @@ public class Controller implements DateFormat {
             alert.setHeaderText("Do you want delete this task?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 taskTable.getItems().remove(selectedIndex);
                 logger.info("Task was deleted");
                 writeData();
@@ -107,6 +110,16 @@ public class Controller implements DateFormat {
     @FXML
     private void initialize() throws IOException, ParseException {
 
+        try {
+
+            dataFile = new File(classLoader.getResource("data/dataFile.bin").getFile());
+        } catch (NullPointerException e) {
+            logger.debug("There is no ata file in resources/data");
+            fileNotValid();
+        }
+
+        initData();
+
         taskNameLabel.setVisible(false);
         taskStartDateLabel.setVisible(false);
         taskEndDateLabel.setVisible(false);
@@ -122,7 +135,6 @@ public class Controller implements DateFormat {
         activeLabel.setVisible(false);
 
         logger.info("Initializing...");
-        initData();
         logger.info("Data were initialized");
         startScheduledExecutorService();
 
@@ -141,16 +153,10 @@ public class Controller implements DateFormat {
     }
 
     protected ObservableList<Task> setCalendar() throws IOException, ParseException {
+
         userDataCal.clear();
         ArrayTaskList ud = new ArrayTaskList();
-        InputStream is = null;
-        try {
-            is = new DataInputStream(new FileInputStream("data.bin"));
-        } catch (FileNotFoundException e) {
-            logger.error("In SetCalendar()-", e);
-        }
-        TaskIO.read(ud, is);
-
+        TaskIO.readBinary(ud, dataFile);
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         String forTime = format.format(c.getTime());
@@ -182,14 +188,14 @@ public class Controller implements DateFormat {
                         @Override
                         public void run() {
                             try {
-                                if (setCalendar().size()!=0) {
+                                if (setCalendar().size() != 0) {
                                     notifyLabel.setText("Next Task is  " + setCalendar().get(0).getTitle() + "  at  " + formatter.format(setCalendar().get(0).getExecutionDate()));
                                     Date firstDateInterval = new Date();
                                     firstDateInterval.setTime(firstDateInterval.getTime() - 2000);
                                     Date secondDateInterval = new Date();
                                     secondDateInterval.setTime(secondDateInterval.getTime() + 2000);
-                                    if((setCalendar().get(0).getExecutionDate()).after(firstDateInterval)&&(setCalendar().get(0).getExecutionDate()).before(secondDateInterval)){
-                                        String message =setCalendar().get(0).getTitle() ;
+                                    if ((setCalendar().get(0).getExecutionDate()).after(firstDateInterval) && (setCalendar().get(0).getExecutionDate()).before(secondDateInterval)) {
+                                        String message = setCalendar().get(0).getTitle();
                                         Alert alert = new Alert(AlertType.INFORMATION);
                                         alert.setTitle("Next Task");
                                         alert.setHeaderText("It is time for:");
@@ -197,7 +203,6 @@ public class Controller implements DateFormat {
                                         logger.warn(message);
                                         alert.showAndWait();
                                     }
-
 
 
                                 } else {
@@ -246,7 +251,7 @@ public class Controller implements DateFormat {
             taskActiveLabel.setText((task.isActive()) ? "Yes" : "No");
             logger.info("Task Details were showed");
             chooseLabel.setVisible(false);
-        }else{
+        } else {
 
             taskNameLabel.setVisible(false);
             taskStartDateLabel.setVisible(false);
@@ -268,15 +273,7 @@ public class Controller implements DateFormat {
 
     private void initData() throws IOException, ParseException {
         ArrayTaskList ud = new ArrayTaskList();
-        InputStream is = null;
-
-        try {
-            is = new DataInputStream(new FileInputStream("data.bin"));
-        } catch (FileNotFoundException e) {
-            logger.error("In initData()-", e);
-        }
-        logger.info("New inputStream created");
-        TaskIO.read(ud, is);
+        TaskIO.readBinary(ud, dataFile);
         logger.info("Data has been read");
         for (Task l : ud) {
             userData.add(l);
@@ -289,12 +286,12 @@ public class Controller implements DateFormat {
         Task tempTask = new Task();
         boolean okClicked = ShowTaskEditView.showTaskEditDialog(tempTask);
         if (okClicked) {
-            if(TaskEditorController.isOk) {
+            if (TaskEditorController.isOk) {
                 getTaskData().add(tempTask);
                 logger.info("New Task was added to list");
                 writeData();
                 logger.info("Data were written in handleNewTask()");
-                TaskEditorController.isOk=false;
+                TaskEditorController.isOk = false;
             }
         }
     }
@@ -304,6 +301,7 @@ public class Controller implements DateFormat {
         logger.info("Showing calendar dialog window...");
         CalendarView.showCalendarDialog();
     }
+
     @FXML
     private void onNotifyClicked() {
 
@@ -372,16 +370,19 @@ public class Controller implements DateFormat {
             }
         }
 
-        OutputStream os = null;
-        try {
-            os = new DataOutputStream(new FileOutputStream("data.bin"));
-        } catch (FileNotFoundException e) {
-            logger.error("In writeData()-", e);
-        }
-        logger.info("New DataOutputStream was opened");
-        TaskIO.write(ud, os);
+        TaskIO.writeBinary(ud, dataFile);
         logger.info("Data were written in binary file");
     }
 
+    public static void fileNotValid() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("");
+        alert.setHeaderText("There is no data file or it is not valid");
+        alert.setContentText("Please copy dataFile.bin from /data/backup to /data");
+        logger.error("There is no data file or it is not valid");
+        alert.showAndWait();
+        Platform.exit();
+        System.exit(0);
+    }
 
 }

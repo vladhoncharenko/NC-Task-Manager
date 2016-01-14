@@ -44,10 +44,11 @@ public class CalendarController implements DateFormat {
     private Label actveLabel;
 
     private ObservableList<Task> userData2 = FXCollections.observableArrayList();
-
     public ObservableList<Task> getTaskData() {
         return userData2;
     }
+    ClassLoader classLoader = CalendarController.class.getClassLoader();
+    File dataFile = new File(classLoader.getResource("data/dataFile.bin").getFile());
 
     @FXML
     private void initialize() throws IOException, ParseException {
@@ -100,13 +101,7 @@ public class CalendarController implements DateFormat {
     private void initData() throws IOException, ParseException {
 
         ArrayTaskList ud = new ArrayTaskList();
-        InputStream is = null;
-        try {
-            is = new DataInputStream(new FileInputStream("data.bin"));
-        } catch (FileNotFoundException e) {
-            logger.error("In initData()-", e);
-        }
-        TaskIO.read(ud, is);
+        TaskIO.readBinary(ud, dataFile);
 
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());

@@ -317,65 +317,65 @@ public class Main implements DateFormat {
 		}
 		taskFour.setActive(false);
 
-		System.out.println("____INPUT/OUTPUT____");
-		System.out.println("____Binary IO Stream____");
-
-		LinkedTaskList LTL = new LinkedTaskList();
-		LinkedTaskList LTL2 = new LinkedTaskList();
-		System.out.println("List before:");
-		firstTaskList.toString();
-
-		OutputStream os = new DataOutputStream(new FileOutputStream("data.bin"));
-		TaskIO.write(firstTaskList, os);
-
-		System.out.println("List after:");
-		InputStream is = new DataInputStream(new FileInputStream("data.bin"));
-		TaskIO.read(LTL, is);
-
-		System.out.println("____Binary File IO____");
-
-		ClassLoader classLoader = Main.class.getClassLoader();
-		File taskBinaryFile = new File(classLoader.getResource("data/data.bin").getFile());
-
-
-
-		System.out.println("List before");
-		newList.toString();
-
-		TaskIO.writeBinary(newList, taskBinaryFile);
-		System.out.println("List after");
-		TaskIO.readBinary(LTL2, taskBinaryFile);
-
-		System.out.println("____Text IO Stream____");
-
-		System.out.println("List before");
-		firstTaskList.toString();
-
-		LinkedTaskList LTL3 = new LinkedTaskList();
-
-		Writer bw = new BufferedWriter(new FileWriter("data.txt"));
-		TaskIO.write(firstTaskList, bw);
-
-		System.out.println("List after");
-		Reader inputStreamReader = new BufferedReader(new FileReader("data.txt"));
-		TaskIO.read(LTL3, inputStreamReader);
-
-		System.out.println("____Text File IO____");
-
-		LinkedTaskList ATL2 = new LinkedTaskList();
-
-
-		File  taskTextFile = new File(classLoader.getResource("data/tasks.txt").getFile());
-
-
-		System.out.println("List before:");
-		newList2.toString();
-
-		TaskIO.writeText(newList2, taskTextFile);
-
-		System.out.println("List after:");
-		TaskIO.readText(ATL2, taskTextFile);
-		
+//		System.out.println("____INPUT/OUTPUT____");
+//		System.out.println("____Binary IO Stream____");
+//
+//		LinkedTaskList LTL = new LinkedTaskList();
+//		LinkedTaskList LTL2 = new LinkedTaskList();
+//		System.out.println("List before:");
+//		firstTaskList.toString();
+//
+//		OutputStream os = new DataOutputStream(new FileOutputStream("dataFile.bin"));
+//		TaskIO.write(firstTaskList, os);
+//
+//		System.out.println("List after:");
+//		InputStream is = new DataInputStream(new FileInputStream("dataFile.bin"));
+//		TaskIO.read(LTL, is);
+//
+//		System.out.println("____Binary File IO____");
+//
+//		ClassLoader classLoader = Main.class.getClassLoader();
+//		File taskBinaryFile = new File(classLoader.getResource("data/dataFileBinaryIO.bin").getFile());
+//
+//
+//
+//		System.out.println("List before");
+//		newList.toString();
+//
+//		TaskIO.writeBinary(newList, taskBinaryFile);
+//		System.out.println("List after");
+//		TaskIO.readBinary(LTL2, taskBinaryFile);
+//
+//		System.out.println("____Text IO Stream____");
+//
+//		System.out.println("List before");
+//		firstTaskList.toString();
+//
+//		LinkedTaskList LTL3 = new LinkedTaskList();
+//
+//		Writer bw = new BufferedWriter(new FileWriter("data.txt"));
+//		TaskIO.write(firstTaskList, bw);
+//
+//		System.out.println("List after");
+//		Reader inputStreamReader = new BufferedReader(new FileReader("data.txt"));
+//		TaskIO.read(LTL3, inputStreamReader);
+//
+//		System.out.println("____Text File IO____");
+//
+//		LinkedTaskList ATL2 = new LinkedTaskList();
+//
+//
+//		File  taskTextFile = new File(classLoader.getResource("data/tasks.txt").getFile());
+//
+//
+//		System.out.println("List before:");
+//		newList2.toString();
+//
+//		TaskIO.writeText(newList2, taskTextFile);
+//
+//		System.out.println("List after:");
+//		TaskIO.readText(ATL2, taskTextFile);
+//
 	
 
 	}
