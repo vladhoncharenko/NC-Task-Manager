@@ -205,21 +205,12 @@ public class ArrayTaskList extends TaskList {
         if (getClass() != obj.getClass())
             return false;
         ArrayTaskList other = (ArrayTaskList) obj;
-
-        if (!Arrays.equals(basicArray, other.basicArray))
-            return false;
-
-        if (format == null) {
-            if (DateFormat.format != null)
-                return false;
-        } else if (!format.equals(DateFormat.format))
-            return false;
         if (index != other.index)
             return false;
-
         if (size != other.size)
             return false;
-
+        if (!Arrays.equals(basicArray, other.basicArray))
+            return false;
         return true;
 
     }
