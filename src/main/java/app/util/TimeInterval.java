@@ -5,7 +5,7 @@ import app.model.Task;
 
 public class TimeInterval {
 
-    public static String TimeToInterval(Task task) {
+    public static String timeToInterval(Task task) {
         StringBuilder stringInterval = new StringBuilder();
         int interval = task.getRepeatInterval();
         int[] timeAmount = new int[4];

@@ -247,7 +247,7 @@ public class Controller implements DateFormat {
             taskNameLabel.setText(task.getTitle());
             taskStartDateLabel.setText(DateUtil.format(task.getStartTime()));
             taskEndDateLabel.setText(DateUtil.format(task.getEndTime()));
-            taskIntervalLabel.setText(TimeInterval.TimeToInterval(task));
+            taskIntervalLabel.setText(TimeInterval.timeToInterval(task));
             taskActiveLabel.setText((task.isActive()) ? "Yes" : "No");
             logger.info("Task Details were showed");
             chooseLabel.setVisible(false);
