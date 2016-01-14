@@ -14,7 +14,7 @@ import java.util.Date;
  * @version 1.0
  */
 
-public class Task implements DateFormat, Serializable {
+public class Task implements DateFormat, Serializable,Cloneable{
 
     private static final long serialVersionUID = 1L;
     final static Logger logger = Logger.getLogger(Task.class);
