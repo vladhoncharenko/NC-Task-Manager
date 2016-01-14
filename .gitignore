@@ -4,4 +4,5 @@
 *.jar
 
 target/
+/NC-Task-Manager.iml
 .idea/
