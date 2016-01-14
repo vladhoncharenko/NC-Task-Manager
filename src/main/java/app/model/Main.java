@@ -376,7 +376,6 @@ public class Main implements DateFormat {
 //		System.out.println("List after:");
 //		TaskIO.readText(ATL2, taskTextFile);
 //
-	
 
 	}
 

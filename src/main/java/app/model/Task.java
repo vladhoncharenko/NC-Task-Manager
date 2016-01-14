@@ -365,11 +365,11 @@ public class Task implements DateFormat, Serializable,Cloneable{
     @Override
     public String toString() {
         if (this.isRepeated()) {
-            System.out.println("Task " + title + " starts at " + start + ", ends at " + end + ", with interval "
+            return("Task " + title + " starts at " + start + ", ends at " + end + ", with interval "
                     + interval + " minutes, active=" + active);
         } else
-            System.out.println("Task " + title + " starts at " + time + " active=" + active);
-        return null;
+            return("Task " + title + " starts at " + time + " active=" + active);
+
     }
 
 
