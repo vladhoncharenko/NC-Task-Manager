@@ -9,7 +9,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -41,8 +40,7 @@ public class TaskIO {
      */
     public static void write(TaskList tasks, OutputStream outStream) {
         Calendar cal = Calendar.getInstance();
-        DataOutputStream dataOutputStream = new DataOutputStream(outStream);
-        try {
+        try (DataOutputStream dataOutputStream = new DataOutputStream(outStream)) {
 
             dataOutputStream.writeByte(tasks.size());
 
@@ -94,23 +92,9 @@ public class TaskIO {
 
                 }
             }
+            dataOutputStream.flush();
         } catch (IOException e) {
             logger.error("Binary Write:", e);
-
-        } finally {
-
-            try {
-                dataOutputStream.flush();
-            } catch (IOException e2) {
-                logger.error("Binary Write flush():", e2);
-            }
-
-            try {
-                dataOutputStream.close();
-            } catch (IOException e3) {
-                logger.error("Binary Write close():", e3);
-            }
-
         }
     }
 
@@ -122,8 +106,8 @@ public class TaskIO {
      */
     public static void read(TaskList tasks, InputStream inStream) {
 
-        DataInputStream dataInputStream = new DataInputStream(inStream);
-        try {
+        try (DataInputStream dataInputStream = new DataInputStream(inStream)) {
+
             int t = dataInputStream.readByte();
             for (int i = 0; i < t; i++) {
                 dataInputStream.readByte();
@@ -182,17 +166,9 @@ public class TaskIO {
         } catch (IOException e2) {
             logger.error("Binary Read:", e2);
             Controller.fileNotValid();
-
-
-        } finally {
-            try {
-                dataInputStream.close();
-            } catch (IOException e3) {
-                logger.error("Binary Read close():", e3);
-
-            }
         }
-        //tasks.toString();
+
+
     }
 
     /**
@@ -202,32 +178,13 @@ public class TaskIO {
      * @param file
      */
     public static void writeBinary(TaskList tasks, File file) {
-
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(file);
-        } catch (FileNotFoundException e1) {
-            logger.error("Binary File Write:", e1);
-
-        }
-
-        try {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             write(tasks, fileOutputStream);
-
-        } finally {
-            try {
-                if (fileOutputStream != null) {
-                    fileOutputStream.flush();
-                }
-            } catch (IOException e) {
-                logger.error("Binary File Write flush():", e);
-            }
-            try {
-                fileOutputStream.close();
-            } catch (IOException e2) {
-                logger.error("Binary File Write close():", e2);
-            }
+            fileOutputStream.flush();
+        } catch (IOException e) {
+            logger.error("Binary File Write:", e);
         }
+
     }
 
     /**
@@ -237,26 +194,11 @@ public class TaskIO {
      * @param file
      */
     public static void readBinary(TaskList tasks, File file) {
-
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e1) {
-            logger.error("Binary File Read:", e1);
-        }
-
-        try {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
             read(tasks, fileInputStream);
-        } finally {
-            try {
-                if (fileInputStream != null) {
-                    fileInputStream.close();
-                }
-            } catch (IOException e) {
-                logger.error("Binary File Read close():):", e);
-            }
+        } catch (IOException e) {
+            logger.error("Binary File Read:", e);
         }
-
     }
 
     /**
@@ -267,13 +209,10 @@ public class TaskIO {
      */
     public static void write(TaskList tasks, Writer out) {
 
-        BufferedWriter bufferedWriter = null;
         int taskCounter = 0;
         int lastTaskIndex = tasks.size() - 1;
 
-        try {
-
-            bufferedWriter = new BufferedWriter(out);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(out)) {
 
             for (Task h : tasks) {
 
@@ -330,23 +269,11 @@ public class TaskIO {
                 bufferedWriter.write(System.lineSeparator());
                 taskCounter++;
             }
+            bufferedWriter.flush();
         } catch (IOException e) {
             logger.error("Text Write:", e);
-
-        } finally {
-            try {
-                if (bufferedWriter != null) {
-                    bufferedWriter.flush();
-                }
-            } catch (IOException e1) {
-                logger.error("Text Write flush():", e1);
-            }
-            try {
-                bufferedWriter.close();
-            } catch (IOException e2) {
-                logger.error("Text Write close():", e2);
-            }
         }
+
     }
 
     /**
@@ -356,8 +283,6 @@ public class TaskIO {
      * @param in
      */
     public static void read(TaskList tasks, Reader in) {
-
-        BufferedReader bufferedReader = new BufferedReader(in);
 
         String oneTask;
         String taskTitle = null;
@@ -374,7 +299,7 @@ public class TaskIO {
         Pattern taskIntervalPattern = Pattern
                 .compile("^\\[(([0-9]+) days?)? (([0-9]+) hours?)? (([0-9]+) minutes?)? (([0-9]+) seconds?)?\\]$");
 
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(in)) {
             if (bufferedReader.ready()) {
                 while ((oneTask = bufferedReader.readLine()) != null) {
                     Task newTask = null;
@@ -433,20 +358,12 @@ public class TaskIO {
                     }
                 }
             }
-        } catch (NumberFormatException e1) {
-            logger.error("Text Read Format:", e1);
+        } catch (ParseException e1) {
+            logger.error("Text Read Parse:", e1);
         } catch (IOException e2) {
             logger.error("Text Read IO:", e2);
-        } catch (ParseException e3) {
-            logger.error("Text Read Parse:", e3);
-        } finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e3) {
-                logger.error("Text Read close():", e3);
-            }
         }
-        //tasks.toString();
+
 
     }
 
@@ -457,28 +374,13 @@ public class TaskIO {
      * @param file
      * @throws IOException
      */
-    public static void writeText(TaskList tasks, File file) throws IOException {
-        FileWriter fileWriter = null;
-
-        try {
-            fileWriter = new FileWriter(file);
-
-        } catch (FileNotFoundException e1) {
-            logger.error("Text File Write:", e1);
-        }
-
-        try {
+    public static void writeText(TaskList tasks, File file) {
+        try (FileWriter fileWriter = new FileWriter(file)) {
             write(tasks, fileWriter);
-
-        } finally {
-            try {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-            } catch (IOException e2) {
-                logger.error("Text File Write close():", e2);
-            }
+        } catch (IOException e) {
+            logger.error("Write Text File:", e);
         }
+
     }
 
     /**
@@ -488,27 +390,13 @@ public class TaskIO {
      * @param file
      * @throws IOException
      */
-    public static void readText(TaskList tasks, File file) throws IOException {
+    public static void readText(TaskList tasks, File file) {
 
-        FileReader fileReader = null;
-        try {
-            fileReader = new FileReader(file);
-        } catch (FileNotFoundException e1) {
-            logger.error("Text File Read:", e1);
-        }
-
-        try {
+        try (FileReader fileReader = new FileReader(file)) {
             read(tasks, fileReader);
-        } finally {
-            try {
-                if (fileReader != null) {
-                    fileReader.close();
-                }
-            } catch (IOException e) {
-                logger.error("Text File Read close():", e);
-            }
+        } catch (IOException e) {
+            logger.error("Read Text File:", e);
         }
-
     }
 
 }

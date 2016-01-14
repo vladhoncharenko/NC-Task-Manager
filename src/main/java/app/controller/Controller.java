@@ -111,7 +111,6 @@ public class Controller implements DateFormat {
     private void initialize() throws IOException, ParseException {
 
         try {
-
             dataFile = new File(classLoader.getResource("data/dataFile.bin").getFile());
         } catch (NullPointerException e) {
             logger.debug("There is no ata file in resources/data");
