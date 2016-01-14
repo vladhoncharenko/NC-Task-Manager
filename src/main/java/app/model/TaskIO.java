@@ -131,9 +131,19 @@ public class TaskIO {
                 l.setTitle(dataInputStream.readUTF());
 
                 if (dataInputStream.readByte() == 1) {
-                    l.setActive(true);
+
+                    try {
+                        l.setActive(true);
+                    } catch (NullPointerException e) {
+                        logger.error("setActive()-", e);
+                    }
+
                 } else {
-                    l.setActive(false);
+                    try {
+                        l.setActive(false);
+                    } catch (NullPointerException e) {
+                        logger.error("setActive()-", e);
+                    }
                 }
 
                 try {
@@ -406,12 +416,15 @@ public class TaskIO {
                     }
 
                     active = (taskMatcher.group(9) == null);
-                    newTask.setActive(active);
+                    try {
+                        newTask.setActive(active);
+                    } catch (NullPointerException e) {
+                        logger.error("setActive()-", e);
+                    }
 
                     try {
                         tasks.add(newTask);
                     } catch (NullTaskException e) {
-                        System.err.println("\n" + "Text Read Add Task:" + e.toString());
                         logger.error("Text Read Add Task:", e);
                     }
 
