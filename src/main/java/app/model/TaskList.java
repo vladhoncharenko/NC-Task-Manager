@@ -1,5 +1,7 @@
 package app.model;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.Iterator;
 
@@ -13,7 +15,7 @@ import java.util.Iterator;
 abstract public class TaskList implements Iterable<Task>, Cloneable, DateFormat, Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    final static Logger logger = Logger.getLogger(ArrayTaskList.class);
     public int size = 0;
     public int index = 0;
 
@@ -107,21 +109,25 @@ abstract public class TaskList implements Iterable<Task>, Cloneable, DateFormat,
                 isEquals = false;
                 break;
             }
+
         }
 
         return isEquals;
 
     }
 
-
     /**
      * Clones Task List
      *
      * @return null
-     * @throws CloneNotSupportedException
      */
-    public Object clone() throws CloneNotSupportedException {
-
-        return null;
+    public TaskList clone() {
+        TaskList clone = null;
+        try {
+            clone = (TaskList) super.clone();
+        } catch (CloneNotSupportedException e) {
+            logger.error("Error while cloning TaskList", e);
+        }
+        return clone;
     }
 }

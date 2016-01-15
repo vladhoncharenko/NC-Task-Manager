@@ -1,5 +1,7 @@
 
 package app.model;
+import sun.awt.image.ImageWatched;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -26,7 +28,7 @@ import java.util.Date;
 
 public class Main implements DateFormat {
 	@SuppressWarnings("deprecation")
-	public static void main(String args[]) throws ParseException, NullTaskException, IOException {
+	public static void main(String args[]) throws ParseException, NullTaskException, IOException, CloneNotSupportedException {
 
 		ArrayTaskList firstTaskList = new ArrayTaskList();
 
@@ -205,11 +207,7 @@ public class Main implements DateFormat {
 		newList.toString();
 
 		LinkedTaskList newList2 = null;
-		try {
-			newList2 = (LinkedTaskList) newList.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+		newList2 = (LinkedTaskList) newList.clone();
 
 		System.out.println("newList HC " + newList.hashCode());
 		System.out.println("newList2 HC " + newList2.hashCode());
@@ -226,11 +224,7 @@ public class Main implements DateFormat {
 		firstTaskList.toString();
 
 		ArrayTaskList firstTaskList2 = null;
-		try {
-			firstTaskList2 = (ArrayTaskList) firstTaskList.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+		firstTaskList2 = (ArrayTaskList) firstTaskList.clone();
 
 		System.out.println("firstTaskList HC " + firstTaskList.hashCode());
 		System.out.println("firstTaskList2 HC " + firstTaskList2.hashCode());
@@ -375,17 +369,29 @@ public class Main implements DateFormat {
 //
 //		System.out.println("List after:");
 //		TaskIO.readText(ATL2, taskTextFile);
+//        System.out.println("NEWL");
 //
-
-//		System.out.println(newList.equals(firstTaskList));
+//		System.out.println(newList.toString());
 //
-//		LinkedTaskList first2 = null;
-//		try {
-//			first2 = (LinkedTaskList) newList.clone();
-//		} catch (CloneNotSupportedException e) {
-//			e.printStackTrace();
-//		}
+//
+//
+//		LinkedTaskList first2 = newList.clone();
+//		System.out.println(first2.toString());
 //		System.out.println(newList.equals(first2));
+//		System.out.println("ff");
+//		System.out.println(first2.toString());
+//
+//
+//		firstTaskList.getTask(3).setTitle("yhjut");
+//		first2.getTask(1).setTitle("1111111111");
+//		System.out.println(newList.equals(first2));
+//		System.out.println("NEWL");
+//		System.out.println(newList.toString());
+//		System.out.println("ff");
+//		System.out.println(first2.toString());
+
+
+
 	}
 
 }

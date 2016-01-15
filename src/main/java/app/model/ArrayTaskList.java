@@ -142,7 +142,7 @@ public class ArrayTaskList extends TaskList {
      */
     private class ArrayListIterator implements Iterator<Task> {
 
-        int cursor;
+        int cursor = 0;
 
         /**
          * Checks, is task list has next element
@@ -150,7 +150,7 @@ public class ArrayTaskList extends TaskList {
          * @return true or false
          */
         public boolean hasNext() {
-            return cursor != size;
+            return cursor != index;
         }
 
         /**
@@ -161,7 +161,7 @@ public class ArrayTaskList extends TaskList {
         public Task next() {
 
             int i = cursor;
-            if (i >= size)
+            if (i >= index)
                 throw new NoSuchElementException("This element is not exist");
             Task[] elementData = basicArray;
             if (i >= elementData.length)
@@ -193,20 +193,11 @@ public class ArrayTaskList extends TaskList {
      * Clones Array Task List
      *
      * @return clonedArray
-     * @throws CloneNotSupportedException
      */
-    public Object clone() throws CloneNotSupportedException {
-
-        ArrayTaskList clonedArray = new ArrayTaskList();
-        for (Task l : this) {
-            try {
-                clonedArray.add(l);
-            } catch (NullTaskException e) {
-                logger.error("In clone()-", e);
-            }
-        }
-        return clonedArray;
-
+    public ArrayTaskList clone() {
+        ArrayTaskList clone = (ArrayTaskList) super.clone();
+        clone.basicArray = this.basicArray.clone();
+        return clone;
     }
 
 }

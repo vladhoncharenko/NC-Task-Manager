@@ -14,7 +14,7 @@ import java.util.Date;
  * @version 1.0
  */
 
-public class Task implements DateFormat, Serializable,Cloneable{
+public class Task implements DateFormat, Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     final static Logger logger = Logger.getLogger(Task.class);
@@ -306,55 +306,25 @@ public class Task implements DateFormat, Serializable,Cloneable{
     }
 
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Task other = (Task) obj;
-
-        if (!this.repeated == other.repeated)
-            return false;
-        if (active != other.active)
-            return false;
-
-        if (title == null) {
-            if (other.title != null)
-                return false;
-        } else if (!title.equals(other.title))
-            return false;
-
-        if (!this.repeated) {
-
-            if (time == null) {
-                if (other.time != null)
-                    return false;
-            } else if (!time.equals(other.time))
-                return false;
-
-            return true;
+    public boolean equals(Task otherTask) {
+        boolean isEquals = false;
+        if (this.isRepeated()) {
+            if (this.title.equals(otherTask.title)
+                    && this.active == otherTask.active
+                    && this.start.equals(otherTask.start)
+                    && this.end.equals(otherTask.end)
+                    && this.interval == otherTask.interval) {
+                isEquals = true;
+            }
         } else {
 
-            if (end == null) {
-                if (other.end != null)
-                    return false;
-            } else if (!end.equals(other.end))
-                return false;
-            if (interval != other.interval)
-                return false;
-            if (repeated != other.repeated)
-                return false;
-            if (start == null) {
-                if (other.start != null)
-                    return false;
-            } else if (!start.equals(other.start))
-                return false;
-
-            return true;
+            if (this.title.equals(otherTask.title)
+                    && this.active == otherTask.active
+                    && this.time.equals(otherTask.time)) {
+                isEquals = true;
+            }
         }
+        return isEquals;
     }
 
     /**
@@ -365,10 +335,10 @@ public class Task implements DateFormat, Serializable,Cloneable{
     @Override
     public String toString() {
         if (this.isRepeated()) {
-            return("Task " + title + " starts at " + start + ", ends at " + end + ", with interval "
+            return ("Task " + title + " starts at " + start + ", ends at " + end + ", with interval "
                     + interval + " minutes, active=" + active);
         } else
-            return("Task " + title + " starts at " + time + " active=" + active);
+            return ("Task " + title + " starts at " + time + " active=" + active);
 
     }
 

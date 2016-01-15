@@ -278,24 +278,21 @@ public class LinkedTaskList extends TaskList {
     /**
      * Clones Linked Task List
      *
-     * @return clonedTaskList
-     * @throws CloneNotSupportedException
+     * @return clone
      */
-    public Object clone() throws CloneNotSupportedException {
+    public LinkedTaskList clone() {
 
-        LinkedTaskList clonedTaskList = new LinkedTaskList();
-
-        clonedTaskList.first = clonedTaskList.last = null;
-
+        LinkedTaskList clone = (LinkedTaskList) super.clone();
+        clone.first = clone.last = null;
+        clone.size = 0;
+        clone.index = 0;
         for (Node x = first; x != null; x = x.next)
             try {
-                clonedTaskList.add(x.task);
+                clone.add(x.task);
             } catch (NullTaskException e) {
-
                 logger.error("In clone()-", e);
             }
-
-        return clonedTaskList;
+        return clone;
 
     }
 
@@ -317,7 +314,6 @@ public class LinkedTaskList extends TaskList {
         return result;
 
     }
-
 
 
 }
