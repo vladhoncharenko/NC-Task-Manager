@@ -118,6 +118,7 @@ public class Controller implements DateFormat {
         }
 
         initData();
+        startScheduledExecutorService();
 
         taskNameLabel.setVisible(false);
         taskStartDateLabel.setVisible(false);
@@ -135,7 +136,7 @@ public class Controller implements DateFormat {
 
         logger.info("Initializing...");
         logger.info("Data were initialized");
-        startScheduledExecutorService();
+
 
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
         //taskTime.setCellValueFactory(new PropertyValueFactory<Task, String>(formatter.format(format2.parse("time"))));
@@ -159,7 +160,7 @@ public class Controller implements DateFormat {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         String forTime = format.format(c.getTime());
-        c.add(Calendar.DATE, 1);
+        c.add(Calendar.DATE, 7);
         String toTime = format.format(c.getTime());
         LinkedTaskList ud2 = (LinkedTaskList) Tasks.incoming(ud, forTime, toTime);
 
@@ -190,9 +191,9 @@ public class Controller implements DateFormat {
                                 if (setCalendar().size() != 0) {
                                     notifyLabel.setText("Next Task is  " + setCalendar().get(0).getTitle() + "  at  " + formatter.format(setCalendar().get(0).getExecutionDate()));
                                     Date firstDateInterval = new Date();
-                                    firstDateInterval.setTime(firstDateInterval.getTime() - 2000);
+                                    firstDateInterval.setTime(firstDateInterval.getTime() - 1000);
                                     Date secondDateInterval = new Date();
-                                    secondDateInterval.setTime(secondDateInterval.getTime() + 2000);
+                                    secondDateInterval.setTime(secondDateInterval.getTime() + 1000);
                                     if ((setCalendar().get(0).getExecutionDate()).after(firstDateInterval) && (setCalendar().get(0).getExecutionDate()).before(secondDateInterval)) {
                                         String message = setCalendar().get(0).getTitle();
                                         Alert alert = new Alert(AlertType.INFORMATION);
@@ -307,10 +308,12 @@ public class Controller implements DateFormat {
         try {
             showTaskDetails(setCalendar().get(0));
             taskTable.getSelectionModel().select(setCalendar().get(0));
-        } catch (IOException e1) {
+        } catch (IndexOutOfBoundsException e1) {
             logger.error("onNotifyClicked-", e1);
         } catch (ParseException e2) {
             logger.error("onNotifyClicked-", e2);
+        }catch (IOException e3) {
+            logger.error("onNotifyClicked-", e3);
         }
 
 

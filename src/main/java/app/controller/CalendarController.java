@@ -47,8 +47,8 @@ public class CalendarController implements DateFormat {
     public ObservableList<Task> getTaskData() {
         return userData2;
     }
-    ClassLoader classLoader = CalendarController.class.getClassLoader();
-    File dataFile = new File(classLoader.getResource("data/dataFile.bin").getFile());
+       private ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    private File dataFile=new File(classLoader.getResource("data/dataFile.bin").getFile());
 
     @FXML
     private void initialize() throws IOException, ParseException {
