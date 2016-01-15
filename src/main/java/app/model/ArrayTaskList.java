@@ -190,32 +190,6 @@ public class ArrayTaskList extends TaskList {
     }
 
     /**
-     * Returns true if both objects are equals
-     *
-     * @param obj
-     * @return true or false
-     */
-    @Override
-    public boolean equals(Object obj) {
-
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ArrayTaskList other = (ArrayTaskList) obj;
-        if (index != other.index)
-            return false;
-        if (size != other.size)
-            return false;
-        if (!Arrays.equals(basicArray, other.basicArray))
-            return false;
-        return true;
-
-    }
-
-    /**
      * Clones Array Task List
      *
      * @return clonedArray

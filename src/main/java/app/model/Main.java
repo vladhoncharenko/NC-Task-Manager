@@ -377,6 +377,15 @@ public class Main implements DateFormat {
 //		TaskIO.readText(ATL2, taskTextFile);
 //
 
+//		System.out.println(newList.equals(firstTaskList));
+//
+//		LinkedTaskList first2 = null;
+//		try {
+//			first2 = (LinkedTaskList) newList.clone();
+//		} catch (CloneNotSupportedException e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println(newList.equals(first2));
 	}
 
 }

@@ -318,32 +318,6 @@ public class LinkedTaskList extends TaskList {
 
     }
 
-    /**
-     * Returns true if both objects are equals
-     *
-     * @param obj
-     * @return true or false
-     */
-    @Override
-    public boolean equals(Object obj) {
 
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        TaskList other = (TaskList) obj;
-
-        int in = 0;
-        for (Task l : other) {
-            if (!l.equals(this.getTask(in))) {
-                return false;
-            }
-            in++;
-        }
-
-        return true;
-    }
 
 }

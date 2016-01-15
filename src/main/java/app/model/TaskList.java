@@ -1,99 +1,127 @@
 package app.model;
+
 import java.io.Serializable;
+import java.util.Iterator;
 
 /**
  * Abstract Class for Task List
- * 
+ *
  * @author Vlad Honcharenko
  * @version 1.0
  */
 
 abstract public class TaskList implements Iterable<Task>, Cloneable, DateFormat, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public int size = 0;
-	public int index = 0;
+    public int size = 0;
+    public int index = 0;
 
-	/**
-	 * Adds tasks to task list
-	 * 
-	 * @param task
-	 * @throws NullTaskException
-	 */
-	public void add(Task task) throws NullTaskException {
-	}
+    /**
+     * Adds tasks to task list
+     *
+     * @param task
+     * @throws NullTaskException
+     */
+    public void add(Task task) throws NullTaskException {
+    }
 
-	/**
-	 * Returns size of list
-	 * 
-	 * @return size
-	 */
-	public int size() {
-		return this.size;
+    /**
+     * Returns size of list
+     *
+     * @return size
+     */
+    public int size() {
+        return this.size;
 
-	}
+    }
 
-	/**
-	 * Returns index of list
-	 * 
-	 * @return index
-	 */
-	public int index() {
-		return this.index;
-	}
+    /**
+     * Returns index of list
+     *
+     * @return index
+     */
+    public int index() {
+        return this.index;
+    }
 
-	/**
-	 * Removes task from task list
-	 * 
-	 * @param task
-	 * @return true
-	 * @throws NullTaskException
-	 */
-	public boolean remove(Task task) throws NullTaskException {
-		return true;
-	}
+    /**
+     * Removes task from task list
+     *
+     * @param task
+     * @return true
+     * @throws NullTaskException
+     */
+    public boolean remove(Task task) throws NullTaskException {
+        return true;
+    }
 
-	/**
-	 * Gets task by index
-	 * 
-	 * @param index
-	 * @return null
-	 */
-	public Task getTask(int index) {
-		return null;
-	}
+    /**
+     * Gets task by index
+     *
+     * @param index
+     * @return null
+     */
+    public Task getTask(int index) {
+        return null;
+    }
 
-	/**
-	 * Returns unique code for object
-	 * 
-	 * @return 0
-	 **/
-	public int hashCode() {
+    /**
+     * Returns unique code for object
+     *
+     * @return 0
+     **/
+    public int hashCode() {
 
-		return 0;
+        return 0;
 
-	}
+    }
 
-	/**
-	 * Returns true if both objects are equals
-	 * 
-	 * @param obj
-	 * @return true
-	 */
-	public boolean equals(Object obj) {
+    /**
+     * Returns true if both objects are equals
+     *
+     * @param obj
+     * @return isEquals
+     */
+    public boolean equals(Object obj) {
 
-		return true;
-	}
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
 
-	/**
-	 * Clones Task List
-	 * 
-	 * @return null
-	 * @throws CloneNotSupportedException
-	 */
-	public Object clone() throws CloneNotSupportedException {
+        TaskList other = (TaskList) obj;
+        if (index != other.index)
+            return false;
+        if (size != other.size)
+            return false;
 
-		return null;
-	}
+        boolean isEquals = true;
+        Iterator<Task> firstObjIterator = this.iterator();
+        Iterator<Task> secondObjIterator = other.iterator();
+
+        while (firstObjIterator.hasNext() && secondObjIterator.hasNext()) {
+            if (!firstObjIterator.next().equals(secondObjIterator.next())) {
+                isEquals = false;
+                break;
+            }
+        }
+
+        return isEquals;
+
+    }
+
+
+    /**
+     * Clones Task List
+     *
+     * @return null
+     * @throws CloneNotSupportedException
+     */
+    public Object clone() throws CloneNotSupportedException {
+
+        return null;
+    }
 }
